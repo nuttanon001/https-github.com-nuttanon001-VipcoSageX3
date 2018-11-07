@@ -134,7 +134,7 @@ export class RegisterComponent implements OnInit {
 
       this.serviceEmployee.getOneKeyString({ EmpCode: control.value})
         .subscribe(employee => {
-          if (employee) {
+          if (employee && employee.EmpCode) {
             this.service.getEmployeeAlready(employee.EmpCode)
               .subscribe(data => {
                 if (data) {

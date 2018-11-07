@@ -24,6 +24,8 @@ import { SupplierDialogComponent } from './supplier-dialog/supplier-dialog.compo
 import { BankDialogComponent } from './bank-dialog/bank-dialog.component';
 import { SupplierTableDailogComponent } from './supplier-dialog/supplier-table-dailog/supplier-table-dailog.component';
 import { BankTableDialogComponent } from './bank-dialog/bank-table-dialog/bank-table-dialog.component';
+import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
+import { CategoryTableDialogComponent } from './category-dialog/category-table-dialog/category-table-dialog.component';
 
 @NgModule({
   imports: [
@@ -49,6 +51,8 @@ import { BankTableDialogComponent } from './bank-dialog/bank-table-dialog/bank-t
     BankDialogComponent,
     SupplierTableDailogComponent,
     BankTableDialogComponent,
+    CategoryDialogComponent,
+    CategoryTableDialogComponent,
   ],
   providers: [
     DialogsService,
@@ -69,6 +73,8 @@ import { BankTableDialogComponent } from './bank-dialog/bank-table-dialog/bank-t
     BankDialogComponent,
     SupplierTableDailogComponent,
     BankTableDialogComponent,
+    CategoryDialogComponent,
+    CategoryTableDialogComponent,
   ],
 })
 export class DialogsModule { }

@@ -15,7 +15,7 @@ export class EmployeeService extends BaseRestService<Employee> {
   ) {
     super(
       http,
-      "api/version2/Employee/",
+      "api/Employee/",
       "EmployeeService",
       "EmpCode",
       httpErrorHandler

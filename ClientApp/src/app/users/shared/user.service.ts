@@ -31,6 +31,8 @@ export class UserService extends BaseRestService<User> {
     // Add safe, URL encoded search parameter if there is a search term
     const options = empCode ? { params: new HttpParams().set('EmpCode', empCode) } : {};
 
+    console.log(options);
+
     let url: string = `${this.baseUrl}EmployeeAlready/`;
     return this.http.get<any>(url, options)
       .pipe(catchError(this.handleError(this.serviceName + "/get by employee already", false)));

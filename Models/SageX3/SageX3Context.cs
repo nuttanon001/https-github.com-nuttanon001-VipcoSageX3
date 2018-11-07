@@ -8,8 +8,7 @@ namespace VipcoSageX3.Models.SageX3
     {
         public SageX3Context(DbContextOptions<SageX3Context> options)
             : base(options)
-        {
-        }
+        { }
 
         public virtual DbSet<Atabdiv> Atabdiv { get; set; }
         public virtual DbSet<Atextra> Atextra { get; set; }
@@ -24,8 +23,10 @@ namespace VipcoSageX3.Models.SageX3
         public virtual DbSet<Gaccdudate> Gaccdudate { get; set; }
         public virtual DbSet<Gaccount> Gaccount { get; set; }
         public virtual DbSet<Itmbps> Itmbps { get; set; }
+        public virtual DbSet<Itmcateg> Itmcateg { get; set; }
         public virtual DbSet<Itmfacilit> Itmfacilit { get; set; }
         public virtual DbSet<Itmmaster> Itmmaster { get; set; }
+        public virtual DbSet<Itmmvt> Itmmvt { get; set; }
         public virtual DbSet<Paymentd> Paymentd { get; set; }
         public virtual DbSet<Paymenth> Paymenth { get; set; }
         public virtual DbSet<Porder> Porder { get; set; }
@@ -39,7 +40,9 @@ namespace VipcoSageX3.Models.SageX3
         public virtual DbSet<Prequiso> Prequiso { get; set; }
         public virtual DbSet<Pvcrfoot> Pvcrfoot { get; set; }
         public virtual DbSet<Pvcrvat> Pvcrvat { get; set; }
+        public virtual DbSet<Smvtd> Smvtd { get; set; }
         public virtual DbSet<Sorder> Sorder { get; set; }
+        public virtual DbSet<Stock> Stock { get; set; }
         public virtual DbSet<Stojou> Stojou { get; set; }
         public virtual DbSet<Tabcur> Tabcur { get; set; }
         public virtual DbSet<Tabmodeliv> Tabmodeliv { get; set; }
@@ -6713,6 +6716,937 @@ namespace VipcoSageX3.Models.SageX3
                     .HasMaxLength(8);
             });
 
+            modelBuilder.Entity<Itmcateg>(entity =>
+            {
+                entity.HasKey(e => e.Rowid)
+                    .ForSqlServerIsClustered(false);
+
+                entity.ToTable("ITMCATEG", "VIPCO");
+
+                entity.HasIndex(e => new { e.Stofcy0, e.Tclcod0 })
+                    .HasName("ITMCATEG_ITG0")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.Tclcod0, e.Stofcy0 })
+                    .HasName("ITMCATEG_ITG1")
+                    .IsUnique();
+
+                entity.Property(e => e.Rowid)
+                    .HasColumnName("ROWID")
+                    .HasColumnType("numeric(38, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Abccls0).HasColumnName("ABCCLS_0");
+
+                entity.Property(e => e.Acccod0)
+                    .IsRequired()
+                    .HasColumnName("ACCCOD_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Allrulmat0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULMAT_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulmfg0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULMFG_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulord0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULORD_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulscc0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULSCC_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulsco0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULSCO_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulshi0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULSHI_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrulsre0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULSRE_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Allrultrf0)
+                    .IsRequired()
+                    .HasColumnName("ALLRULTRF_0")
+                    .HasMaxLength(6);
+
+                entity.Property(e => e.Auuid0)
+                    .IsRequired()
+                    .HasColumnName("AUUID_0")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Baspriori0).HasColumnName("BASPRIORI_0");
+
+                entity.Property(e => e.Brdcod0).HasColumnName("BRDCOD_0");
+
+                entity.Property(e => e.Budcstupd0).HasColumnName("BUDCSTUPD_0");
+
+                entity.Property(e => e.Buy0)
+                    .IsRequired()
+                    .HasColumnName("BUY_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Cce0)
+                    .IsRequired()
+                    .HasColumnName("CCE_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce1)
+                    .IsRequired()
+                    .HasColumnName("CCE_1")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce10)
+                    .IsRequired()
+                    .HasColumnName("CCE_10")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce11)
+                    .IsRequired()
+                    .HasColumnName("CCE_11")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce12)
+                    .IsRequired()
+                    .HasColumnName("CCE_12")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce13)
+                    .IsRequired()
+                    .HasColumnName("CCE_13")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce14)
+                    .IsRequired()
+                    .HasColumnName("CCE_14")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce15)
+                    .IsRequired()
+                    .HasColumnName("CCE_15")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce16)
+                    .IsRequired()
+                    .HasColumnName("CCE_16")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce17)
+                    .IsRequired()
+                    .HasColumnName("CCE_17")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce18)
+                    .IsRequired()
+                    .HasColumnName("CCE_18")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce19)
+                    .IsRequired()
+                    .HasColumnName("CCE_19")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce2)
+                    .IsRequired()
+                    .HasColumnName("CCE_2")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce3)
+                    .IsRequired()
+                    .HasColumnName("CCE_3")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce4)
+                    .IsRequired()
+                    .HasColumnName("CCE_4")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce5)
+                    .IsRequired()
+                    .HasColumnName("CCE_5")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce6)
+                    .IsRequired()
+                    .HasColumnName("CCE_6")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce7)
+                    .IsRequired()
+                    .HasColumnName("CCE_7")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce8)
+                    .IsRequired()
+                    .HasColumnName("CCE_8")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cce9)
+                    .IsRequired()
+                    .HasColumnName("CCE_9")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Cfglin0)
+                    .IsRequired()
+                    .HasColumnName("CFGLIN_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Clepctaut0)
+                    .HasColumnName("CLEPCTAUT_0")
+                    .HasColumnType("numeric(10, 4)");
+
+                entity.Property(e => e.Cpramt0)
+                    .HasColumnName("CPRAMT_0")
+                    .HasColumnType("numeric(27, 13)");
+
+                entity.Property(e => e.Cprcoe0)
+                    .HasColumnName("CPRCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Credat0)
+                    .HasColumnName("CREDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Credattim0)
+                    .HasColumnName("CREDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Creusr0)
+                    .IsRequired()
+                    .HasColumnName("CREUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Ctmflg0).HasColumnName("CTMFLG_0");
+
+                entity.Property(e => e.Ctmqty0)
+                    .HasColumnName("CTMQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cuncod0).HasColumnName("CUNCOD_0");
+
+                entity.Property(e => e.Cutcstupd0).HasColumnName("CUTCSTUPD_0");
+
+                entity.Property(e => e.Dacpcucoe0).HasColumnName("DACPCUCOE_0");
+
+                entity.Property(e => e.Dacpcucoe1).HasColumnName("DACPCUCOE_1");
+
+                entity.Property(e => e.Dacpcucoe2).HasColumnName("DACPCUCOE_2");
+
+                entity.Property(e => e.Dacpcucoe3).HasColumnName("DACPCUCOE_3");
+
+                entity.Property(e => e.Dacpuucoe0).HasColumnName("DACPUUCOE_0");
+
+                entity.Property(e => e.Dacsaucoe0).HasColumnName("DACSAUCOE_0");
+
+                entity.Property(e => e.Daycov0).HasColumnName("DAYCOV_0");
+
+                entity.Property(e => e.Die0)
+                    .IsRequired()
+                    .HasColumnName("DIE_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die1)
+                    .IsRequired()
+                    .HasColumnName("DIE_1")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die10)
+                    .IsRequired()
+                    .HasColumnName("DIE_10")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die11)
+                    .IsRequired()
+                    .HasColumnName("DIE_11")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die12)
+                    .IsRequired()
+                    .HasColumnName("DIE_12")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die13)
+                    .IsRequired()
+                    .HasColumnName("DIE_13")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die14)
+                    .IsRequired()
+                    .HasColumnName("DIE_14")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die15)
+                    .IsRequired()
+                    .HasColumnName("DIE_15")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die16)
+                    .IsRequired()
+                    .HasColumnName("DIE_16")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die17)
+                    .IsRequired()
+                    .HasColumnName("DIE_17")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die18)
+                    .IsRequired()
+                    .HasColumnName("DIE_18")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die19)
+                    .IsRequired()
+                    .HasColumnName("DIE_19")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die2)
+                    .IsRequired()
+                    .HasColumnName("DIE_2")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die3)
+                    .IsRequired()
+                    .HasColumnName("DIE_3")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die4)
+                    .IsRequired()
+                    .HasColumnName("DIE_4")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die5)
+                    .IsRequired()
+                    .HasColumnName("DIE_5")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die6)
+                    .IsRequired()
+                    .HasColumnName("DIE_6")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die7)
+                    .IsRequired()
+                    .HasColumnName("DIE_7")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die8)
+                    .IsRequired()
+                    .HasColumnName("DIE_8")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Die9)
+                    .IsRequired()
+                    .HasColumnName("DIE_9")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Dlvflg0).HasColumnName("DLVFLG_0");
+
+                entity.Property(e => e.Eccflg0).HasColumnName("ECCFLG_0");
+
+                entity.Property(e => e.Eccmaj0)
+                    .IsRequired()
+                    .HasColumnName("ECCMAJ_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Eccmin0)
+                    .IsRequired()
+                    .HasColumnName("ECCMIN_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Eccsto0).HasColumnName("ECCSTO_0");
+
+                entity.Property(e => e.Eeu0)
+                    .IsRequired()
+                    .HasColumnName("EEU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Eeustucoe0)
+                    .HasColumnName("EEUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Expnum0).HasColumnName("EXPNUM_0");
+
+                entity.Property(e => e.Exymgtcod0).HasColumnName("EXYMGTCOD_0");
+
+                entity.Property(e => e.Exysta0)
+                    .IsRequired()
+                    .HasColumnName("EXYSTA_0")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Fimhor0).HasColumnName("FIMHOR_0");
+
+                entity.Property(e => e.Fimhoruom0).HasColumnName("FIMHORUOM_0");
+
+                entity.Property(e => e.Flgfas0).HasColumnName("FLGFAS_0");
+
+                entity.Property(e => e.Foh0).HasColumnName("FOH_0");
+
+                entity.Property(e => e.Fohuot0).HasColumnName("FOHUOT_0");
+
+                entity.Property(e => e.Frtcls0)
+                    .IsRequired()
+                    .HasColumnName("FRTCLS_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Frthor0).HasColumnName("FRTHOR_0");
+
+                entity.Property(e => e.Frthoruom0).HasColumnName("FRTHORUOM_0");
+
+                entity.Property(e => e.Genflg0).HasColumnName("GENFLG_0");
+
+                entity.Property(e => e.Gloaaaflg0).HasColumnName("GLOAAAFLG_0");
+
+                entity.Property(e => e.Gloqqqflg0).HasColumnName("GLOQQQFLG_0");
+
+                entity.Property(e => e.Glorrrflg0).HasColumnName("GLORRRFLG_0");
+
+                entity.Property(e => e.Intflg0).HasColumnName("INTFLG_0");
+
+                entity.Property(e => e.Invcnd0)
+                    .IsRequired()
+                    .HasColumnName("INVCND_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Invprodtyp0).HasColumnName("INVPRODTYP_0");
+
+                entity.Property(e => e.Itmcremod0).HasColumnName("ITMCREMOD_0");
+
+                entity.Property(e => e.Itmrefcou0)
+                    .IsRequired()
+                    .HasColumnName("ITMREFCOU_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Itmsfttyp0).HasColumnName("ITMSFTTYP_0");
+
+                entity.Property(e => e.Itmtyp0).HasColumnName("ITMTYP_0");
+
+                entity.Property(e => e.Itmvou0)
+                    .HasColumnName("ITMVOU_0")
+                    .HasColumnType("numeric(12, 4)");
+
+                entity.Property(e => e.Itmwei0)
+                    .HasColumnName("ITMWEI_0")
+                    .HasColumnType("numeric(13, 4)");
+
+                entity.Property(e => e.Lbefmt0)
+                    .IsRequired()
+                    .HasColumnName("LBEFMT_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Lbefmt1)
+                    .IsRequired()
+                    .HasColumnName("LBEFMT_1")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Lbefmt2)
+                    .IsRequired()
+                    .HasColumnName("LBEFMT_2")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Lbefmt3)
+                    .IsRequired()
+                    .HasColumnName("LBEFMT_3")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Lndflg0).HasColumnName("LNDFLG_0");
+
+                entity.Property(e => e.Loaeccflg0).HasColumnName("LOAECCFLG_0");
+
+                entity.Property(e => e.Locdes0).HasColumnName("LOCDES_0");
+
+                entity.Property(e => e.Locdes1).HasColumnName("LOCDES_1");
+
+                entity.Property(e => e.Locdes10).HasColumnName("LOCDES_10");
+
+                entity.Property(e => e.Locdes11).HasColumnName("LOCDES_11");
+
+                entity.Property(e => e.Locdes12).HasColumnName("LOCDES_12");
+
+                entity.Property(e => e.Locdes13).HasColumnName("LOCDES_13");
+
+                entity.Property(e => e.Locdes14).HasColumnName("LOCDES_14");
+
+                entity.Property(e => e.Locdes2).HasColumnName("LOCDES_2");
+
+                entity.Property(e => e.Locdes3).HasColumnName("LOCDES_3");
+
+                entity.Property(e => e.Locdes4).HasColumnName("LOCDES_4");
+
+                entity.Property(e => e.Locdes5).HasColumnName("LOCDES_5");
+
+                entity.Property(e => e.Locdes6).HasColumnName("LOCDES_6");
+
+                entity.Property(e => e.Locdes7).HasColumnName("LOCDES_7");
+
+                entity.Property(e => e.Locdes8).HasColumnName("LOCDES_8");
+
+                entity.Property(e => e.Locdes9).HasColumnName("LOCDES_9");
+
+                entity.Property(e => e.Locmgtcod0).HasColumnName("LOCMGTCOD_0");
+
+                entity.Property(e => e.Lotcou0)
+                    .IsRequired()
+                    .HasColumnName("LOTCOU_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Lotmgtcod0).HasColumnName("LOTMGTCOD_0");
+
+                entity.Property(e => e.Mattol0)
+                    .IsRequired()
+                    .HasColumnName("MATTOL_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Matwrh0)
+                    .IsRequired()
+                    .HasColumnName("MATWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Maxqty0)
+                    .HasColumnName("MAXQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Maxsto0)
+                    .HasColumnName("MAXSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Mceflg0).HasColumnName("MCEFLG_0");
+
+                entity.Property(e => e.Mfgflg0).HasColumnName("MFGFLG_0");
+
+                entity.Property(e => e.Mfglotqty0)
+                    .HasColumnName("MFGLOTQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Mfgshtcod0).HasColumnName("MFGSHTCOD_0");
+
+                entity.Property(e => e.Mfgwrh0)
+                    .IsRequired()
+                    .HasColumnName("MFGWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Minqty0)
+                    .HasColumnName("MINQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Minrmnprc0)
+                    .HasColumnName("MINRMNPRC_0")
+                    .HasColumnType("numeric(8, 3)");
+
+                entity.Property(e => e.Negsto0).HasColumnName("NEGSTO_0");
+
+                entity.Property(e => e.Nmfc0)
+                    .IsRequired()
+                    .HasColumnName("NMFC_0")
+                    .HasMaxLength(9);
+
+                entity.Property(e => e.Ofs0)
+                    .HasColumnName("OFS_0")
+                    .HasColumnType("numeric(9, 4)");
+
+                entity.Property(e => e.Ordwrh0)
+                    .IsRequired()
+                    .HasColumnName("ORDWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Otrstyp0).HasColumnName("OTRSTYP_0");
+
+                entity.Property(e => e.Otrstyp1).HasColumnName("OTRSTYP_1");
+
+                entity.Property(e => e.Otrstyp2).HasColumnName("OTRSTYP_2");
+
+                entity.Property(e => e.Otrstyp3).HasColumnName("OTRSTYP_3");
+
+                entity.Property(e => e.Otrstyp4).HasColumnName("OTRSTYP_4");
+
+                entity.Property(e => e.Ovecod0)
+                    .IsRequired()
+                    .HasColumnName("OVECOD_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ovecod1)
+                    .IsRequired()
+                    .HasColumnName("OVECOD_1")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ovecod2)
+                    .IsRequired()
+                    .HasColumnName("OVECOD_2")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ovecod3)
+                    .IsRequired()
+                    .HasColumnName("OVECOD_3")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ovecod4)
+                    .IsRequired()
+                    .HasColumnName("OVECOD_4")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ovecpnflg0).HasColumnName("OVECPNFLG_0");
+
+                entity.Property(e => e.Ovecpnflg1).HasColumnName("OVECPNFLG_1");
+
+                entity.Property(e => e.Ovecpnflg2).HasColumnName("OVECPNFLG_2");
+
+                entity.Property(e => e.Ovecpnflg3).HasColumnName("OVECPNFLG_3");
+
+                entity.Property(e => e.Ovecpnflg4).HasColumnName("OVECPNFLG_4");
+
+                entity.Property(e => e.Pcccod0)
+                    .IsRequired()
+                    .HasColumnName("PCCCOD_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Pck0)
+                    .IsRequired()
+                    .HasColumnName("PCK_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Pckcap0)
+                    .HasColumnName("PCKCAP_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pckflg0).HasColumnName("PCKFLG_0");
+
+                entity.Property(e => e.Pckstkflg0).HasColumnName("PCKSTKFLG_0");
+
+                entity.Property(e => e.Pcu0)
+                    .IsRequired()
+                    .HasColumnName("PCU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcu1)
+                    .IsRequired()
+                    .HasColumnName("PCU_1")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcu2)
+                    .IsRequired()
+                    .HasColumnName("PCU_2")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcu3)
+                    .IsRequired()
+                    .HasColumnName("PCU_3")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcurul0).HasColumnName("PCURUL_0");
+
+                entity.Property(e => e.Pcurul1).HasColumnName("PCURUL_1");
+
+                entity.Property(e => e.Pcurul2).HasColumnName("PCURUL_2");
+
+                entity.Property(e => e.Pcurul3).HasColumnName("PCURUL_3");
+
+                entity.Property(e => e.Pcustucoe0)
+                    .HasColumnName("PCUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pcustucoe1)
+                    .HasColumnName("PCUSTUCOE_1")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pcustucoe2)
+                    .HasColumnName("PCUSTUCOE_2")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pcustucoe3)
+                    .HasColumnName("PCUSTUCOE_3")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Phaflg0).HasColumnName("PHAFLG_0");
+
+                entity.Property(e => e.Plaacs0)
+                    .IsRequired()
+                    .HasColumnName("PLAACS_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Planner0)
+                    .IsRequired()
+                    .HasColumnName("PLANNER_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Plh0).HasColumnName("PLH_0");
+
+                entity.Property(e => e.Plhuot0).HasColumnName("PLHUOT_0");
+
+                entity.Property(e => e.Prqflg0).HasColumnName("PRQFLG_0");
+
+                entity.Property(e => e.Ptocod0)
+                    .IsRequired()
+                    .HasColumnName("PTOCOD_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Purflg0).HasColumnName("PURFLG_0");
+
+                entity.Property(e => e.Purpriprc0)
+                    .HasColumnName("PURPRIPRC_0")
+                    .HasColumnType("numeric(8, 3)");
+
+                entity.Property(e => e.Puu0)
+                    .IsRequired()
+                    .HasColumnName("PUU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Puustucoe0)
+                    .HasColumnName("PUUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Qlycrd0)
+                    .IsRequired()
+                    .HasColumnName("QLYCRD_0")
+                    .HasMaxLength(8);
+
+                entity.Property(e => e.Quaacs0)
+                    .IsRequired()
+                    .HasColumnName("QUAACS_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Quaflg0).HasColumnName("QUAFLG_0");
+
+                entity.Property(e => e.Rcpflg0).HasColumnName("RCPFLG_0");
+
+                entity.Property(e => e.Reocod0).HasColumnName("REOCOD_0");
+
+                entity.Property(e => e.Reofcy0)
+                    .IsRequired()
+                    .HasColumnName("REOFCY_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Reomgtcod0).HasColumnName("REOMGTCOD_0");
+
+                entity.Property(e => e.Reominqty0)
+                    .HasColumnName("REOMINQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Reoper0).HasColumnName("REOPER_0");
+
+                entity.Property(e => e.Reopol0)
+                    .IsRequired()
+                    .HasColumnName("REOPOL_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Reotsd0)
+                    .HasColumnName("REOTSD_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Safsto0)
+                    .HasColumnName("SAFSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Salflg0).HasColumnName("SALFLG_0");
+
+                entity.Property(e => e.Salrmnprc0)
+                    .HasColumnName("SALRMNPRC_0")
+                    .HasColumnType("numeric(8, 3)");
+
+                entity.Property(e => e.Sau0)
+                    .IsRequired()
+                    .HasColumnName("SAU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Saustucoe0)
+                    .HasColumnName("SAUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Sccwrh0)
+                    .IsRequired()
+                    .HasColumnName("SCCWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Scowrh0)
+                    .IsRequired()
+                    .HasColumnName("SCOWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Scpflg0).HasColumnName("SCPFLG_0");
+
+                entity.Property(e => e.Scsflg0).HasColumnName("SCSFLG_0");
+
+                entity.Property(e => e.Sercou0)
+                    .IsRequired()
+                    .HasColumnName("SERCOU_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Sermgtcod0).HasColumnName("SERMGTCOD_0");
+
+                entity.Property(e => e.Sescod0)
+                    .IsRequired()
+                    .HasColumnName("SESCOD_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Shiwrh0)
+                    .IsRequired()
+                    .HasColumnName("SHIWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Shr0)
+                    .HasColumnName("SHR_0")
+                    .HasColumnType("numeric(10, 4)");
+
+                entity.Property(e => e.Simcstupd0).HasColumnName("SIMCSTUPD_0");
+
+                entity.Property(e => e.Srewrh0)
+                    .IsRequired()
+                    .HasColumnName("SREWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Sstcod0)
+                    .IsRequired()
+                    .HasColumnName("SSTCOD_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Ssu0)
+                    .IsRequired()
+                    .HasColumnName("SSU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Ssustucoe0)
+                    .HasColumnName("SSUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Stcnum0)
+                    .IsRequired()
+                    .HasColumnName("STCNUM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Stdcstupd0).HasColumnName("STDCSTUPD_0");
+
+                entity.Property(e => e.Stdflg0).HasColumnName("STDFLG_0");
+
+                entity.Property(e => e.Stocod0).HasColumnName("STOCOD_0");
+
+                entity.Property(e => e.Stofcy0)
+                    .IsRequired()
+                    .HasColumnName("STOFCY_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Stomgtcod0).HasColumnName("STOMGTCOD_0");
+
+                entity.Property(e => e.Stu0)
+                    .IsRequired()
+                    .HasColumnName("STU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Stulbefmt0)
+                    .IsRequired()
+                    .HasColumnName("STULBEFMT_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Tclcod0)
+                    .IsRequired()
+                    .HasColumnName("TCLCOD_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Tcldes0)
+                    .IsRequired()
+                    .HasColumnName("TCLDES_0")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Tclsho0)
+                    .IsRequired()
+                    .HasColumnName("TCLSHO_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Tooflg0).HasColumnName("TOOFLG_0");
+
+                entity.Property(e => e.Trfwrh0)
+                    .IsRequired()
+                    .HasColumnName("TRFWRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Trkcod0).HasColumnName("TRKCOD_0");
+
+                entity.Property(e => e.Trklev0).HasColumnName("TRKLEV_0");
+
+                entity.Property(e => e.Tsicod0)
+                    .IsRequired()
+                    .HasColumnName("TSICOD_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Tsicod1)
+                    .IsRequired()
+                    .HasColumnName("TSICOD_1")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Tsicod2)
+                    .IsRequired()
+                    .HasColumnName("TSICOD_2")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Tsicod3)
+                    .IsRequired()
+                    .HasColumnName("TSICOD_3")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Tsicod4)
+                    .IsRequired()
+                    .HasColumnName("TSICOD_4")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Upddat0)
+                    .HasColumnName("UPDDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upddattim0)
+                    .HasColumnName("UPDDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updtick0)
+                    .HasColumnName("UPDTICK_0")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Updusr0)
+                    .IsRequired()
+                    .HasColumnName("UPDUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vacitm0)
+                    .IsRequired()
+                    .HasColumnName("VACITM_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vacitm1)
+                    .IsRequired()
+                    .HasColumnName("VACITM_1")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vacitm2)
+                    .IsRequired()
+                    .HasColumnName("VACITM_2")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vltcod0)
+                    .IsRequired()
+                    .HasColumnName("VLTCOD_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Vou0)
+                    .IsRequired()
+                    .HasColumnName("VOU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Weu0)
+                    .IsRequired()
+                    .HasColumnName("WEU_0")
+                    .HasMaxLength(3);
+            });
+
             modelBuilder.Entity<Itmfacilit>(entity =>
             {
                 entity.HasKey(e => e.Rowid)
@@ -8215,6 +9149,627 @@ namespace VipcoSageX3.Models.SageX3
                     .IsRequired()
                     .HasColumnName("WEU_0")
                     .HasMaxLength(3);
+            });
+
+            modelBuilder.Entity<Itmmvt>(entity =>
+            {
+                entity.HasKey(e => e.Rowid)
+                    .ForSqlServerIsClustered(false);
+
+                entity.ToTable("ITMMVT", "VIPCO");
+
+                entity.HasIndex(e => new { e.Itmref0, e.Stofcy0 })
+                    .HasName("ITMMVT_ITV0")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.Stofcy0, e.Itmref0 })
+                    .HasName("ITMMVT_ITV1")
+                    .IsUnique();
+
+                entity.Property(e => e.Rowid)
+                    .HasColumnName("ROWID")
+                    .HasColumnType("numeric(38, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Ainvdtaavc0)
+                    .HasColumnName("AINVDTAAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Ainvdtacst0)
+                    .HasColumnName("AINVDTACST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabavc0)
+                    .HasColumnName("ALABAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabavc1)
+                    .HasColumnName("ALABAVC_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabavc2)
+                    .HasColumnName("ALABAVC_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabcst0)
+                    .HasColumnName("ALABCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabcst1)
+                    .HasColumnName("ALABCST_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Alabcst2)
+                    .HasColumnName("ALABCST_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amacavc0)
+                    .HasColumnName("AMACAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amacavc1)
+                    .HasColumnName("AMACAVC_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amacavc2)
+                    .HasColumnName("AMACAVC_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amaccst0)
+                    .HasColumnName("AMACCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amaccst1)
+                    .HasColumnName("AMACCST_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amaccst2)
+                    .HasColumnName("AMACCST_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc0)
+                    .HasColumnName("AMATAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc1)
+                    .HasColumnName("AMATAVC_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc2)
+                    .HasColumnName("AMATAVC_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc3)
+                    .HasColumnName("AMATAVC_3")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc4)
+                    .HasColumnName("AMATAVC_4")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatavc5)
+                    .HasColumnName("AMATAVC_5")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst0)
+                    .HasColumnName("AMATCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst1)
+                    .HasColumnName("AMATCST_1")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst2)
+                    .HasColumnName("AMATCST_2")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst3)
+                    .HasColumnName("AMATCST_3")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst4)
+                    .HasColumnName("AMATCST_4")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Amatcst5)
+                    .HasColumnName("AMATCST_5")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovelabavc0)
+                    .HasColumnName("AOVELABAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovelabcst0)
+                    .HasColumnName("AOVELABCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovemacavc0)
+                    .HasColumnName("AOVEMACAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovemaccst0)
+                    .HasColumnName("AOVEMACCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovematavc0)
+                    .HasColumnName("AOVEMATAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovematcst0)
+                    .HasColumnName("AOVEMATCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovescoavc0)
+                    .HasColumnName("AOVESCOAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Aovescocst0)
+                    .HasColumnName("AOVESCOCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Ascoavc0)
+                    .HasColumnName("ASCOAVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Ascocst0)
+                    .HasColumnName("ASCOCST_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Auuid0)
+                    .IsRequired()
+                    .HasColumnName("AUUID_0")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Avc0)
+                    .HasColumnName("AVC_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Avcbasamt0)
+                    .HasColumnName("AVCBASAMT_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Avcbasqty0)
+                    .HasColumnName("AVCBASQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Bprctlsto0)
+                    .HasColumnName("BPRCTLSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Bprphysto0)
+                    .HasColumnName("BPRPHYSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Bprrejsto0)
+                    .HasColumnName("BPRREJSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cfgvcrnum0)
+                    .IsRequired()
+                    .HasColumnName("CFGVCRNUM_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Credat0)
+                    .HasColumnName("CREDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Credattim0)
+                    .HasColumnName("CREDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Creusr0)
+                    .IsRequired()
+                    .HasColumnName("CREUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Ctlall0)
+                    .HasColumnName("CTLALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Ctlsto0)
+                    .HasColumnName("CTLSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cundat0)
+                    .HasColumnName("CUNDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat1)
+                    .HasColumnName("CUNDAT_1")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat10)
+                    .HasColumnName("CUNDAT_10")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat11)
+                    .HasColumnName("CUNDAT_11")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat2)
+                    .HasColumnName("CUNDAT_2")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat3)
+                    .HasColumnName("CUNDAT_3")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat4)
+                    .HasColumnName("CUNDAT_4")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat5)
+                    .HasColumnName("CUNDAT_5")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat6)
+                    .HasColumnName("CUNDAT_6")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat7)
+                    .HasColumnName("CUNDAT_7")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat8)
+                    .HasColumnName("CUNDAT_8")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundat9)
+                    .HasColumnName("CUNDAT_9")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Cundim0).HasColumnName("CUNDIM_0");
+
+                entity.Property(e => e.Cunissmvt0).HasColumnName("CUNISSMVT_0");
+
+                entity.Property(e => e.Cunnbr0).HasColumnName("CUNNBR_0");
+
+                entity.Property(e => e.Cunnbrequ0).HasColumnName("CUNNBREQU_0");
+
+                entity.Property(e => e.Cunqtyclc0)
+                    .HasColumnName("CUNQTYCLC_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc1)
+                    .HasColumnName("CUNQTYCLC_1")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc10)
+                    .HasColumnName("CUNQTYCLC_10")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc11)
+                    .HasColumnName("CUNQTYCLC_11")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc2)
+                    .HasColumnName("CUNQTYCLC_2")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc3)
+                    .HasColumnName("CUNQTYCLC_3")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc4)
+                    .HasColumnName("CUNQTYCLC_4")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc5)
+                    .HasColumnName("CUNQTYCLC_5")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc6)
+                    .HasColumnName("CUNQTYCLC_6")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc7)
+                    .HasColumnName("CUNQTYCLC_7")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc8)
+                    .HasColumnName("CUNQTYCLC_8")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtyclc9)
+                    .HasColumnName("CUNQTYCLC_9")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew0)
+                    .HasColumnName("CUNQTYNEW_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew1)
+                    .HasColumnName("CUNQTYNEW_1")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew10)
+                    .HasColumnName("CUNQTYNEW_10")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew11)
+                    .HasColumnName("CUNQTYNEW_11")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew2)
+                    .HasColumnName("CUNQTYNEW_2")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew3)
+                    .HasColumnName("CUNQTYNEW_3")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew4)
+                    .HasColumnName("CUNQTYNEW_4")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew5)
+                    .HasColumnName("CUNQTYNEW_5")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew6)
+                    .HasColumnName("CUNQTYNEW_6")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew7)
+                    .HasColumnName("CUNQTYNEW_7")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew8)
+                    .HasColumnName("CUNQTYNEW_8")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunqtynew9)
+                    .HasColumnName("CUNQTYNEW_9")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunrcpmvt0).HasColumnName("CUNRCPMVT_0");
+
+                entity.Property(e => e.Cunsto0)
+                    .HasColumnName("CUNSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Detsht0)
+                    .HasColumnName("DETSHT_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Expnum0).HasColumnName("EXPNUM_0");
+
+                entity.Property(e => e.Gloall0)
+                    .HasColumnName("GLOALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Glosht0)
+                    .HasColumnName("GLOSHT_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Itmref0)
+                    .IsRequired()
+                    .HasColumnName("ITMREF_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Lascundat0)
+                    .HasColumnName("LASCUNDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lascunlis0)
+                    .IsRequired()
+                    .HasColumnName("LASCUNLIS_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Lasissdat0)
+                    .HasColumnName("LASISSDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Laspurdat0)
+                    .HasColumnName("LASPURDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Laspurpri0)
+                    .HasColumnName("LASPURPRI_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lasrcpdat0)
+                    .HasColumnName("LASRCPDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lasrcppri0)
+                    .HasColumnName("LASRCPPRI_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lasreodat0)
+                    .HasColumnName("LASREODAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Linvdtacst0)
+                    .HasColumnName("LINVDTACST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Llabcst0)
+                    .HasColumnName("LLABCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Llabcst1)
+                    .HasColumnName("LLABCST_1")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Llabcst2)
+                    .HasColumnName("LLABCST_2")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmaccst0)
+                    .HasColumnName("LMACCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmaccst1)
+                    .HasColumnName("LMACCST_1")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmaccst2)
+                    .HasColumnName("LMACCST_2")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst0)
+                    .HasColumnName("LMATCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst1)
+                    .HasColumnName("LMATCST_1")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst2)
+                    .HasColumnName("LMATCST_2")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst3)
+                    .HasColumnName("LMATCST_3")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst4)
+                    .HasColumnName("LMATCST_4")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lmatcst5)
+                    .HasColumnName("LMATCST_5")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lovelabcst0)
+                    .HasColumnName("LOVELABCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lovemaccst0)
+                    .HasColumnName("LOVEMACCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lovematcst0)
+                    .HasColumnName("LOVEMATCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lovescocst0)
+                    .HasColumnName("LOVESCOCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Lscocst0)
+                    .HasColumnName("LSCOCST_0")
+                    .HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.Nexcundat0)
+                    .HasColumnName("NEXCUNDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Ordsto0)
+                    .HasColumnName("ORDSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Phyall0)
+                    .HasColumnName("PHYALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Physto0)
+                    .HasColumnName("PHYSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Plfctlsto0)
+                    .HasColumnName("PLFCTLSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Plfphysto0)
+                    .HasColumnName("PLFPHYSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Plfrejsto0)
+                    .HasColumnName("PLFREJSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Rejall0)
+                    .HasColumnName("REJALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Rejsto0)
+                    .HasColumnName("REJSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Salsto0)
+                    .HasColumnName("SALSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Sccall0)
+                    .HasColumnName("SCCALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scclndsto0)
+                    .HasColumnName("SCCLNDSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scoctlall0)
+                    .HasColumnName("SCOCTLALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scoctlsto0)
+                    .HasColumnName("SCOCTLSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scophyall0)
+                    .HasColumnName("SCOPHYALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scophysto0)
+                    .HasColumnName("SCOPHYSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scorejall0)
+                    .HasColumnName("SCOREJALL_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Scorejsto0)
+                    .HasColumnName("SCOREJSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Stofcy0)
+                    .IsRequired()
+                    .HasColumnName("STOFCY_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Traamt0)
+                    .HasColumnName("TRAAMT_0")
+                    .HasColumnType("numeric(24, 7)");
+
+                entity.Property(e => e.Trasto0)
+                    .HasColumnName("TRASTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Trfsto0)
+                    .HasColumnName("TRFSTO_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Upddat0)
+                    .HasColumnName("UPDDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upddattim0)
+                    .HasColumnName("UPDDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updtick0)
+                    .HasColumnName("UPDTICK_0")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Updusr0)
+                    .IsRequired()
+                    .HasColumnName("UPDUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vcrlin0).HasColumnName("VCRLIN_0");
+
+                entity.Property(e => e.Vcrnum0)
+                    .IsRequired()
+                    .HasColumnName("VCRNUM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Vcrtyp0).HasColumnName("VCRTYP_0");
+
+                entity.Property(e => e.Waisto0)
+                    .HasColumnName("WAISTO_0")
+                    .HasColumnType("numeric(28, 13)");
             });
 
             modelBuilder.Entity<Paymentd>(entity =>
@@ -13804,6 +15359,170 @@ namespace VipcoSageX3.Models.SageX3
                 entity.Property(e => e.Vcrtyp0).HasColumnName("VCRTYP_0");
             });
 
+            modelBuilder.Entity<Smvtd>(entity =>
+            {
+                entity.HasKey(e => e.Rowid)
+                    .ForSqlServerIsClustered(false);
+
+                entity.ToTable("SMVTD", "VIPCO");
+
+                entity.HasIndex(e => new { e.Vcrtyp0, e.Vcrnum0, e.Vcrlin0 })
+                    .HasName("SMVTD_SMD0")
+                    .IsUnique();
+
+                entity.Property(e => e.Rowid)
+                    .HasColumnName("ROWID")
+                    .HasColumnType("numeric(38, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Auuid0)
+                    .IsRequired()
+                    .HasColumnName("AUUID_0")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Bomalt0).HasColumnName("BOMALT_0");
+
+                entity.Property(e => e.Bomalttyp0).HasColumnName("BOMALTTYP_0");
+
+                entity.Property(e => e.Credat0)
+                    .HasColumnName("CREDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Credattim0)
+                    .HasColumnName("CREDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Creusr0)
+                    .IsRequired()
+                    .HasColumnName("CREUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Eccvalmaj0)
+                    .IsRequired()
+                    .HasColumnName("ECCVALMAJ_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Eccvalmin0)
+                    .IsRequired()
+                    .HasColumnName("ECCVALMIN_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Expnum0).HasColumnName("EXPNUM_0");
+
+                entity.Property(e => e.Impnumlig0).HasColumnName("IMPNUMLIG_0");
+
+                entity.Property(e => e.Itmdes10)
+                    .IsRequired()
+                    .HasColumnName("ITMDES1_0")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Itmref0)
+                    .IsRequired()
+                    .HasColumnName("ITMREF_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Lintyp0).HasColumnName("LINTYP_0");
+
+                entity.Property(e => e.Pcu0)
+                    .IsRequired()
+                    .HasColumnName("PCU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcustucoe0)
+                    .HasColumnName("PCUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pntmvtcod0).HasColumnName("PNTMVTCOD_0");
+
+                entity.Property(e => e.Pri0)
+                    .HasColumnName("PRI_0")
+                    .HasColumnType("numeric(27, 13)");
+
+                entity.Property(e => e.Priord0)
+                    .HasColumnName("PRIORD_0")
+                    .HasColumnType("numeric(27, 13)");
+
+                entity.Property(e => e.Qtypcu0)
+                    .HasColumnName("QTYPCU_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtypcuori0)
+                    .HasColumnName("QTYPCUORI_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtystu0)
+                    .HasColumnName("QTYSTU_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtystuori0)
+                    .HasColumnName("QTYSTUORI_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Stu0)
+                    .IsRequired()
+                    .HasColumnName("STU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Updcod0).HasColumnName("UPDCOD_0");
+
+                entity.Property(e => e.Upddat0)
+                    .HasColumnName("UPDDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upddattim0)
+                    .HasColumnName("UPDDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updpri0).HasColumnName("UPDPRI_0");
+
+                entity.Property(e => e.Updtick0)
+                    .HasColumnName("UPDTICK_0")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Updusr0)
+                    .IsRequired()
+                    .HasColumnName("UPDUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Vcrlin0).HasColumnName("VCRLIN_0");
+
+                entity.Property(e => e.Vcrlinori0).HasColumnName("VCRLINORI_0");
+
+                entity.Property(e => e.Vcrlinpnt0).HasColumnName("VCRLINPNT_0");
+
+                entity.Property(e => e.Vcrnum0)
+                    .IsRequired()
+                    .HasColumnName("VCRNUM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Vcrnumori0)
+                    .IsRequired()
+                    .HasColumnName("VCRNUMORI_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Vcrtyp0).HasColumnName("VCRTYP_0");
+
+                entity.Property(e => e.Vcrtypori0).HasColumnName("VCRTYPORI_0");
+
+                entity.Property(e => e.Wrh0)
+                    .IsRequired()
+                    .HasColumnName("WRH_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Zsm010)
+                    .HasColumnName("ZSM01_0")
+                    .HasColumnType("numeric(16, 4)");
+
+                entity.Property(e => e.Zsm020)
+                    .HasColumnName("ZSM02_0")
+                    .HasColumnType("numeric(14, 3)");
+
+                entity.Property(e => e.Zsm030)
+                    .IsRequired()
+                    .HasColumnName("ZSM03_0")
+                    .HasMaxLength(3);
+            });
+
             modelBuilder.Entity<Sorder>(entity =>
             {
                 entity.HasKey(e => e.Rowid)
@@ -15327,6 +17046,243 @@ namespace VipcoSageX3.Models.SageX3
                     .IsRequired()
                     .HasColumnName("VTT_0")
                     .HasMaxLength(1);
+            });
+
+            modelBuilder.Entity<Stock>(entity =>
+            {
+                entity.HasKey(e => e.Rowid)
+                    .ForSqlServerIsClustered(false);
+
+                entity.ToTable("STOCK", "VIPCO");
+
+                entity.HasIndex(e => new { e.Itmref0, e.Sernum0 })
+                    .HasName("STOCK_STO5");
+
+                entity.HasIndex(e => new { e.Stofcy0, e.Loc0 })
+                    .HasName("STOCK_STO4");
+
+                entity.HasIndex(e => new { e.Stofcy0, e.Stocou0 })
+                    .HasName("STOCK_STO0")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.Stofcy0, e.Palnum0, e.Itmref0 })
+                    .HasName("STOCK_STO1");
+
+                entity.HasIndex(e => new { e.Itmref0, e.Stofcy0, e.Lot0, e.Slo0, e.Loc0 })
+                    .HasName("STOCK_STO3");
+
+                entity.Property(e => e.Rowid)
+                    .HasColumnName("ROWID")
+                    .HasColumnType("numeric(38, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Auuid0)
+                    .IsRequired()
+                    .HasColumnName("AUUID_0")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Bpslot0)
+                    .IsRequired()
+                    .HasColumnName("BPSLOT_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Credat0)
+                    .HasColumnName("CREDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Credattim0)
+                    .HasColumnName("CREDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Creusr0)
+                    .IsRequired()
+                    .HasColumnName("CREUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Ctrnum0)
+                    .IsRequired()
+                    .HasColumnName("CTRNUM_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Cumallqta0)
+                    .HasColumnName("CUMALLQTA_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cumallqty0)
+                    .HasColumnName("CUMALLQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cumwipqta0)
+                    .HasColumnName("CUMWIPQTA_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cumwipqty0)
+                    .HasColumnName("CUMWIPQTY_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Cunlisnum0)
+                    .IsRequired()
+                    .HasColumnName("CUNLISNUM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Cunlokflg0).HasColumnName("CUNLOKFLG_0");
+
+                entity.Property(e => e.Eccvalmaj0)
+                    .IsRequired()
+                    .HasColumnName("ECCVALMAJ_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Edtflg0).HasColumnName("EDTFLG_0");
+
+                entity.Property(e => e.Expnum0).HasColumnName("EXPNUM_0");
+
+                entity.Property(e => e.Itmref0)
+                    .IsRequired()
+                    .HasColumnName("ITMREF_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Lascundat0)
+                    .HasColumnName("LASCUNDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lasissdat0)
+                    .HasColumnName("LASISSDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lasrcpdat0)
+                    .HasColumnName("LASRCPDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Loc0)
+                    .IsRequired()
+                    .HasColumnName("LOC_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Loccat0).HasColumnName("LOCCAT_0");
+
+                entity.Property(e => e.Loctyp0)
+                    .IsRequired()
+                    .HasColumnName("LOCTYP_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Lot0)
+                    .IsRequired()
+                    .HasColumnName("LOT_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Owner0)
+                    .IsRequired()
+                    .HasColumnName("OWNER_0")
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Palnum0)
+                    .IsRequired()
+                    .HasColumnName("PALNUM_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Pcu0)
+                    .IsRequired()
+                    .HasColumnName("PCU_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcuori0)
+                    .IsRequired()
+                    .HasColumnName("PCUORI_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Pcustucoe0)
+                    .HasColumnName("PCUSTUCOE_0")
+                    .HasColumnType("numeric(18, 7)");
+
+                entity.Property(e => e.Pjt0)
+                    .IsRequired()
+                    .HasColumnName("PJT_0")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Qlyctldem0)
+                    .IsRequired()
+                    .HasColumnName("QLYCTLDEM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Qtypcu0)
+                    .HasColumnName("QTYPCU_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtypcuori0)
+                    .HasColumnName("QTYPCUORI_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtystu0)
+                    .HasColumnName("QTYSTU_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtystuact0)
+                    .HasColumnName("QTYSTUACT_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Qtystuori0)
+                    .HasColumnName("QTYSTUORI_0")
+                    .HasColumnType("numeric(28, 13)");
+
+                entity.Property(e => e.Rcpdat0)
+                    .HasColumnName("RCPDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Sernum0)
+                    .IsRequired()
+                    .HasColumnName("SERNUM_0")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Slo0)
+                    .IsRequired()
+                    .HasColumnName("SLO_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Sta0)
+                    .IsRequired()
+                    .HasColumnName("STA_0")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Stocou0)
+                    .HasColumnName("STOCOU_0")
+                    .HasColumnType("numeric(11, 1)");
+
+                entity.Property(e => e.Stofcy0)
+                    .IsRequired()
+                    .HasColumnName("STOFCY_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Stofld10)
+                    .IsRequired()
+                    .HasColumnName("STOFLD1_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Stofld20)
+                    .IsRequired()
+                    .HasColumnName("STOFLD2_0")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Upddat0)
+                    .HasColumnName("UPDDAT_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upddattim0)
+                    .HasColumnName("UPDDATTIM_0")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updtick0)
+                    .HasColumnName("UPDTICK_0")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Updusr0)
+                    .IsRequired()
+                    .HasColumnName("UPDUSR_0")
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Wrh0)
+                    .IsRequired()
+                    .HasColumnName("WRH_0")
+                    .HasMaxLength(5);
             });
 
             modelBuilder.Entity<Stojou>(entity =>
@@ -32727,7 +34683,7 @@ namespace VipcoSageX3.Models.SageX3
                 .IsCyclic();
 
             modelBuilder.HasSequence<int>("SEQ_SMVTD")
-                .StartsAt(94)
+                .StartsAt(1912)
                 .HasMin(1)
                 .HasMax(2000000000)
                 .IsCyclic();

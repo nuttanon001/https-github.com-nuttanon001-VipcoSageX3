@@ -15,12 +15,16 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="ClosedXML" Version="0.93.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.9" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="RtfPipe" Version="1.0.0.23" />
   </ItemGroup>
@@ -47,6 +51,9 @@
     <Content Include="ClientApp\tsconfig.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\reports\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

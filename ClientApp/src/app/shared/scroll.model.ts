@@ -13,6 +13,7 @@ export interface Scroll {
   WhereProject?: string;
   WhereBranch?: string;
   WhereBank?: string;
+  WhereBanks?: Array<string>;
   WhereSupplier?: string;
   SDate ?: Date;
   EDate ?: Date;

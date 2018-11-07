@@ -47,18 +47,17 @@ namespace VipcoSageX3.Controllers.SageX3
             if (Scroll == null)
                 return BadRequest();
 
+            Expression<Func<Cacce, bool>> predicate = e => e.Die0 == "BOM";
 
             // Filter
             var filters = string.IsNullOrEmpty(Scroll.Filter) ? new string[] { "" }
                                 : Scroll.Filter.Split(null);
 
-            var predicate = PredicateBuilder.False<Cacce>();
-
             foreach (string temp in filters)
             {
-                string keyword = temp;
-                predicate = predicate.Or(x => FindFunc(x.Cce0, keyword) ||
-                                              FindFunc(x.Des0, keyword));
+                string keyword = temp.ToLower();
+                predicate = predicate.And(x => x.Cce0.ToLower().Contains(keyword) ||
+                                              x.Des0.ToLower().Contains(keyword));
             }
 
             //Order by
@@ -82,8 +81,6 @@ namespace VipcoSageX3.Controllers.SageX3
                     order = o => o.OrderBy(x => x.Cce0);
                     break;
             }
-
-            predicate = predicate.And(x => x.Die0 == "BOM");
 
             var QueryData = await this.repository.GetToListAsync(
                                     selector: selected => selected,  // Selected

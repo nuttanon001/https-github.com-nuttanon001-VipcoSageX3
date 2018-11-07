@@ -6,10 +6,8 @@ namespace VipcoSageX3.Models.Machines
 {
     public partial class MachineContext : DbContext
     {
-        public MachineContext(DbContextOptions<MachineContext> options)
-            : base(options)
-        {
-        }
+        public MachineContext(DbContextOptions<MachineContext> options) : base(options)
+        { }
 
         public virtual DbSet<AttachFile> AttachFile { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }

@@ -33,10 +33,15 @@ namespace VipcoSageX3.ViewModels
         /// </summary>
         public string Currency { get; set; }
         /// <summary>
-        /// PAYMENTH.AMTCUR_0
+        /// PAYMENTH.AMTBAN_0
         /// </summary>
         public decimal? Amount { get; set; }
         public string AmountString => $"{this.Currency} " + this.Amount?.ToString("0,0.00") ?? "-";
+        /// <summary>
+        /// PAYMENTH.BANPAYTPY_0
+        /// </summary>
+        public decimal? Amount2 { get; set; }
+        public string Amount2String => $"{this.Currency} " + (this.Amount2 * -1)?.ToString("0,0.00") ?? "-";
         /// <summary>
         /// PAYMENTH.DES_0
         /// </summary>

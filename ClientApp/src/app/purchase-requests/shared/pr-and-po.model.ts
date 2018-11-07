@@ -72,7 +72,14 @@ export interface PrAndPo {
   /// PREQUISO.POQSEQ
   /// </summary>
   LinkPoSEQ?: number;
-
+  /// <summary>
+  /// PREQUIS.CREUSR
+  /// </summary>
+  CreateBy?: string;
+  /// <summary>
+  /// PREQUIS.CLEFLG_0
+  /// </summary>
+  PrCloseStatus?: string;
   // Purchase Order
   /// <summary>
   /// PORDERQ.POHNUM

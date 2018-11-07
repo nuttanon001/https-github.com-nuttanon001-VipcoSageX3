@@ -39,7 +39,7 @@ namespace VipcoSageX3.Controllers
             Expression<Func<User, bool>> condition = u => u.EmpCode == EmpCode;
             var Result = await this.repository.AnyDataAsync(condition);
             if (Result)
-                return BadRequest(new { Error = " this employee was already in system." });
+                return NoContent();
 
             return new JsonResult(new { Result = true }, this.DefaultJsonSettings);
         }

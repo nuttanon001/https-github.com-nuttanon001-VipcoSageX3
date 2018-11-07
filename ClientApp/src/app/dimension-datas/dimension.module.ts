@@ -7,6 +7,7 @@ import { WorkgroupService } from './shared/workgroup.service';
 import { BomLevelService } from './shared/bom-level.service';
 import { BankService } from './shared/bank.service';
 import { SupplierService } from './shared/supplier.service';
+import { CategoryService } from './shared/category.service';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { SupplierService } from './shared/supplier.service';
     WorkgroupService,
     BomLevelService,
     BankService,
-    SupplierService
+    SupplierService,
+    CategoryService
   ]
 })
 export class DimensionModule { }

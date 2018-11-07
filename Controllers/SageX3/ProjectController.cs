@@ -52,13 +52,13 @@ namespace VipcoSageX3.Controllers.SageX3
             var filters = string.IsNullOrEmpty(Scroll.Filter) ? new string[] { "" }
                                 : Scroll.Filter.Split(null);
 
-            var predicate = PredicateBuilder.False<Cacce>();
+            Expression<Func<Cacce, bool>> predicate = e => e.Die0 == "PRJ";
 
             foreach (string temp in filters)
             {
-                string keyword = temp;
-                predicate = predicate.Or(x => FindFunc(x.Cce0, keyword) ||
-                                              FindFunc(x.Des0, keyword));
+                string keyword = temp.ToLower();
+                predicate = predicate.And(x => x.Cce0.ToLower().Contains(keyword) ||
+                                              x.Des0.ToLower().Contains(keyword));
             }
 
             //Order by
@@ -66,13 +66,13 @@ namespace VipcoSageX3.Controllers.SageX3
             // Order
             switch (Scroll.SortField)
             {
-                case "BomLevelCode":
+                case "ProjectCode":
                     if (Scroll.SortOrder == -1)
                         order = o => o.OrderByDescending(x => x.Cce0);
                     else
                         order = o => o.OrderBy(x => x.Cce0);
                     break;
-                case "BomLevelName":
+                case "ProjectName":
                     if (Scroll.SortOrder == -1)
                         order = o => o.OrderByDescending(x => x.Des0);
                     else
@@ -82,8 +82,6 @@ namespace VipcoSageX3.Controllers.SageX3
                     order = o => o.OrderBy(x => x.Cce0);
                     break;
             }
-
-            predicate = predicate.And(x => x.Die0 == "PRJ");
 
             var QueryData = await this.repository.GetToListAsync(
                                     selector: selected => selected,  // Selected

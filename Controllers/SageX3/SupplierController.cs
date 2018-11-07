@@ -46,7 +46,6 @@ namespace VipcoSageX3.Controllers.SageX3
             if (Scroll == null)
                 return BadRequest();
 
-
             // Filter
             var filters = string.IsNullOrEmpty(Scroll.Filter) ? new string[] { "" }
                                 : Scroll.Filter.Split(null);

@@ -48,7 +48,7 @@ namespace VipcoSageX3.Helpers
                 .ForMember(x => x.CloseStatus, o => o.MapFrom(s => s.Cleflg0))
                 .ForMember(x => x.CloseStatusString, o => o.MapFrom(s => s.Cleflg0 == 1 ? "Not Close" : "Is Close"))
                 .ForMember(x => x.OrderDate, o => o.MapFrom(s => s.Orddat0))
-                .ForMember(x => x.OrderDateString,o => o.MapFrom(s => s.Orddat0.ToString("dd/MM/yy")))
+                .ForMember(x => x.OrderDateString, o => o.MapFrom(s => s.Orddat0.ToString("dd/MM/yy")))
                 .ForMember(x => x.ProjectCode, o => o.MapFrom(s => s.Pjth0))
                 .ForMember(x => x.PurchaseOrderNo, o => o.MapFrom(s => s.Pohnum0))
                 .ForMember(x => x.ReceiveByCode, o => o.MapFrom(s => s.Zpo050))
@@ -85,7 +85,7 @@ namespace VipcoSageX3.Helpers
             #region ProjectCode
 
             CreateMap<Cacce, ProjectCodeViewModel>()
-                .ForMember(x => x.Rowid, o => o.MapFrom(s =>s.Rowid))
+                .ForMember(x => x.Rowid, o => o.MapFrom(s => s.Rowid))
                 .ForMember(x => x.ProjectCode, o => o.MapFrom(s => s.Cce0))
                 .ForMember(x => x.ProjectName, o => o.MapFrom(s => s.Des0));
 
@@ -115,18 +115,21 @@ namespace VipcoSageX3.Helpers
             #endregion
 
             #region Payment
+
             CreateMap<Paymenth, PaymentViewModel>()
-                .ForMember(x => x.Amount, o => o.MapFrom(s => s.Amtcur0))
-                .ForMember(x => x.BankNo, o => o.MapFrom(s => s.Ban0))
-                .ForMember(x => x.CheckNo, o => o.MapFrom(s => s.Chqnum0))
-                .ForMember(x => x.Currency, o => o.MapFrom(s => s.Cur0))
-                .ForMember(x => x.Description, o => o.MapFrom(s => s.Des0))
-                .ForMember(x => x.PayBy, o => o.MapFrom(s => s.Bpr0))
-                .ForMember(x => x.PaymentDate, o => o.MapFrom(s => s.Accdat0))
-                .ForMember(x => x.PaymentNo, o => o.MapFrom(s => s.Num0))
                 .ForMember(x => x.RefNo, o => o.MapFrom(s => s.Ref0))
+                .ForMember(x => x.PayBy, o => o.MapFrom(s => s.Bpr0))
+                .ForMember(x => x.BankNo, o => o.MapFrom(s => s.Ban0))
+                .ForMember(x => x.Currency, o => o.MapFrom(s => s.Cur0))
+                .ForMember(x => x.Amount, o => o.MapFrom(s => s.Amtban0))
+                .ForMember(x => x.PaymentNo, o => o.MapFrom(s => s.Num0))
+                .ForMember(x => x.CheckNo, o => o.MapFrom(s => s.Chqnum0))
+                .ForMember(x => x.Description, o => o.MapFrom(s => s.Des0))
+                .ForMember(x => x.Amount2, o => o.MapFrom(s => s.Banpaytpy0))
                 .ForMember(x => x.SupplierNo, o => o.MapFrom(s => s.Bpainv0))
+                .ForMember(x => x.PaymentDate, o => o.MapFrom(s => s.Accdat0))
                 .ForMember(x => x.SupplierName, o => o.MapFrom(s => s.Bpanam0));
+
             #endregion
 
             #region Bank
@@ -153,6 +156,8 @@ namespace VipcoSageX3.Helpers
             //.ForMember(x => x.QuantityStk, o => o.MapFrom(s => s.Qtystu0))
             // PurchaseRequest Header
             CreateMap<Prequis, PurchaseRequestAndOrderViewModel>()
+                .ForMember(x => x.PrCloseStatus, o => o.MapFrom(s => s.Cleflg0 == 1 ? "Not Close" : "Close"))
+                .ForMember(x => x.CreateBy, o => o.MapFrom(s => s.Creusr0))
                 .ForMember(x => x.PRDate, o => o.MapFrom(s => s.Prqdat0))
                 .ForMember(x => x.PRDateString, o => o.MapFrom(s => s.Prqdat0.ToString("dd/MM/yy")));
             // PurchaseRequest Detail
@@ -210,6 +215,10 @@ namespace VipcoSageX3.Helpers
                 .ForMember(x => x.RcQuantityWeight, o => o.MapFrom(s => s.Qtyweu0))
                 .ForMember(x => x.RcQuantityInvPur, o => o.MapFrom(s => s.Invqtypuu0))
                 .ForMember(x => x.RcQuantityInvStk, o => o.MapFrom(s => s.Invqtystu0));
+            #endregion
+
+            #region StockMovement
+
             #endregion
         }
     }

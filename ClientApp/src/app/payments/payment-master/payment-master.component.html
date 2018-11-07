@@ -9,7 +9,7 @@
     </div>
     <div>
       <i class="fa fa-product-hunt" aria-hidden="true"></i>
-      <mat-form-field>
+      <mat-form-field style="width:250px;">
         <input matInput placeholder="Filter By Bank" class="click-input"
                (click)="onShowDialog('Bank')" readonly
                formControlName="BankString">
@@ -24,11 +24,27 @@
       </mat-form-field>
     </div>
     <div>
+      <i class="fa fa-calendar-o" aria-hidden="true"></i>
+      <mat-form-field>
+        <input matInput [matDatepicker]="SDate" placeholder="Choose a date"
+               formControlName="SDate" [max]="reportForm.controls.EDate.value">
+        <mat-datepicker-toggle matSuffix [for]="SDate"></mat-datepicker-toggle>
+        <mat-datepicker #SDate></mat-datepicker>
+      </mat-form-field>
+      &nbsp;&ndash;&nbsp;
+      <mat-form-field>
+        <input matInput [matDatepicker]="EDate" placeholder="Choose a date"
+               formControlName="EDate" [min]="reportForm.controls.SDate.value">
+        <mat-datepicker-toggle matSuffix [for]="EDate"></mat-datepicker-toggle>
+        <mat-datepicker #EDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div>
       <button mat-mini-fab color="warn" (click)="resetFilter()"
               matTooltipPosition="left" matTooltip="Reset all filter">
         <mat-icon>clear</mat-icon>
       </button>
-      <button mat-mini-fab color="accent" (click)="exportData()"
+      <button mat-mini-fab color="accent" (click)="onReportPayment()"
               matTooltipPosition="left" matTooltip="Export" style="margin-left:10px;">
         <mat-icon>file_download</mat-icon>
       </button>
@@ -47,7 +63,7 @@
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{'width.px':col.width}"
                 class="PrHeader">
               {{col.header}}
-              <p-sortIcon *ngIf="col.type === 1" [field]="col.field"></p-sortIcon>
+              <p-sortIcon [field]="col.field"></p-sortIcon>
             </th>
           </tr>
         </ng-template>

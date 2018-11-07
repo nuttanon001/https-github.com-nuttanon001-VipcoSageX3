@@ -50,6 +50,10 @@ import { HttpErrorHandler } from "./shared/http-error-handler.service";
       { path: "register/:condition", component: RegisterComponent },
       { path: "register", component: RegisterComponent },
       {
+        path: "stock-onhand",
+        loadChildren: "./stock-onhands/stock-onhand.module#StockOnhandModule",
+      },
+      {
         path: "purchase-order",
         loadChildren: "./purchase-orders/purchase-order.module#PurchaseOrderModule",
         canActivate: [AuthGuard]
@@ -59,8 +63,13 @@ import { HttpErrorHandler } from "./shared/http-error-handler.service";
         loadChildren: "./purchase-requests/pr.module#PrModule",
       },
       {
+        path: "stock-movement",
+        loadChildren: "./stock-movements/stock-movement.module#StockMovementModule",
+      },
+      {
         path: "payment",
         loadChildren: "./payments/payment.module#PaymentModule",
+        canActivate: [AuthGuard]
       },
       { path: "**", redirectTo: "home" },
     ]),

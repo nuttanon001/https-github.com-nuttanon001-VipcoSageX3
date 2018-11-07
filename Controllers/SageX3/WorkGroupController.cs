@@ -67,14 +67,12 @@ namespace VipcoSageX3.Controllers.SageX3
             // Filter
             var filters = string.IsNullOrEmpty(Scroll.Filter) ? new string[] { "" }
                                 : Scroll.Filter.Split(null);
-
-            var predicate = PredicateBuilder.False<Atextra>();
-
+            Expression<Func<Atextra,bool>> predicate = x => x.Zone0 == "LNGDES" && x.Ident10 == "3002" && x.Ident20.Length > 1;
             foreach (string temp in filters)
             {
                 string keyword = temp;
-                predicate = predicate.Or(x => FindFunc(x.Ident20, keyword) ||
-                                              FindFunc(x.Texte0, keyword));
+                predicate = predicate.And(x => x.Ident20.ToLower().Contains(keyword.ToLower()) ||
+                                               x.Texte0.ToLower().Contains(keyword.ToLower()));
             }
 
             //Order by
@@ -99,7 +97,6 @@ namespace VipcoSageX3.Controllers.SageX3
                     break;
             }
 
-            predicate = predicate.And(x => x.Zone0 == "LNGDES" && x.Ident10 == "3002" && x.Ident20.Length > 1);
 
             var QueryData = await this.repositoryDim2.GetToListAsync(
                                     selector: selected => selected,  // Selected

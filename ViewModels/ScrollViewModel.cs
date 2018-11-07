@@ -21,6 +21,7 @@ namespace VipcoSageX3.ViewModels
         public string WhereProject { get; set; }
         public string WhereBranch { get; set; }
         public string WhereBank { get; set; }
+        public List<string> WhereBanks { get; set; } = new List<string>();
         public string WhereSupplier { get; set; }
         public int? WhereId { get; set; }
         public int? TotalRow { get; set; }

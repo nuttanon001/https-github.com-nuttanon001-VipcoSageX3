@@ -68,6 +68,7 @@ export abstract class BaseScheduleComponent<Model,Service extends BaseRestServic
       WhereWorkItem: [this.scroll.WhereWorkItem],
       WorkItemString: [""],
       WhereBank: [this.scroll.WhereBank],
+      WhereBanks: [this.scroll.WhereBanks],
       BankString: [""],
       WhereSupplier: [this.scroll.WhereSupplier],
       SupplierString: [""],

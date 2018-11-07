@@ -33,6 +33,14 @@ namespace VipcoSageX3
             // Add AutoMap
             AutoMapper.Mapper.Reset();
             services.AddAutoMapper(typeof(Startup));
+            // Setting up CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
             // Change AddDbContextPool if EF Core 2.1
             services.AddDbContextPool<MachineContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("MachineConnection")))
@@ -64,6 +72,8 @@ namespace VipcoSageX3
                 app.UseExceptionHandler("/Error");
             }
 
+            // Shows UseCors with named policy.
+            app.UseCors("AllowAllOrigins");
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

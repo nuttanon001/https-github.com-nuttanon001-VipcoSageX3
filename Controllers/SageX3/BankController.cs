@@ -55,7 +55,7 @@ namespace VipcoSageX3.Controllers.SageX3
             foreach (string temp in filters)
             {
                 string keyword = temp;
-                predicate = predicate.Or(x => FindFunc(x.Ban0, keyword) ||
+                predicate = predicate.And(x => FindFunc(x.Ban0, keyword) ||
                                               FindFunc(x.Des0, keyword));
             }
 

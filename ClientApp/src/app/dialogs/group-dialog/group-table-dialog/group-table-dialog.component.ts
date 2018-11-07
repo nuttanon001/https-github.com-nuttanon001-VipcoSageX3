@@ -16,8 +16,8 @@ export class GroupTableDialogComponent extends BaseTableMK2Component<Workgroup, 
     super(service);
     this.columns = [
       { columnName: "", columnField: "select", cell: undefined },
-      { columnName: "Group Code", columnField: "ProjectCode", cell: (row: Workgroup) => row.WorkGroupCode },
-      { columnName: "Group Name", columnField: "ProjectName", cell: (row: Workgroup) => row.WorkGroupName },
+      { columnName: "Group Code", columnField: "WorkGroupCode", cell: (row: Workgroup) => row.WorkGroupCode },
+      { columnName: "Group Name", columnField: "WorkGroupName", cell: (row: Workgroup) => row.WorkGroupName },
     ];
 
     this.displayedColumns = this.columns.map(x => x.columnField);

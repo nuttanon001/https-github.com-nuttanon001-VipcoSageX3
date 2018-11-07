@@ -21,6 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     PrMasterComponent,
     PrTableComponent
   ],
-  providers: [PrService]
+  providers: [
+    PrService
+  ]
 })
 export class PrModule { }

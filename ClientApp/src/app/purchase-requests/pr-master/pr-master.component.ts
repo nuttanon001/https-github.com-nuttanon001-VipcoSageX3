@@ -27,7 +27,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
     private service: PrService,
     private fb: FormBuilder,
     private viewCon: ViewContainerRef,
-    private serviceDialogs:DialogsService
+    private serviceDialogs: DialogsService
   ) { }
 
   //Parameter
@@ -74,7 +74,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
       EDate: [this.scroll.EDate],
       WhereBranch: [this.scroll.WhereBranch],
       WhereProject: [this.scroll.WhereProject],
-      ProjectString:[""],
+      ProjectString: [""],
       WhereWorkGroup: [this.scroll.WhereWorkGroup],
       WorkGroupString: [""],
       WhereWorkItem: [this.scroll.WhereWorkItem],
@@ -131,18 +131,20 @@ export class PrMasterComponent implements OnInit, OnDestroy {
           { field: 'Project', header: 'JobNo.', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'PRDateString', header: 'PrDate', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'ItemCode', header: 'Item-Code', width: width250, type: ColumnType.PurchaseRequest },
-          { field: 'ItemName', header: 'Item-Name',  width: width350, type: ColumnType.PurchaseRequest },
-          { field: 'PurUom', header: 'Uom',  width: width100, type: ColumnType.PurchaseRequest },
+          { field: 'ItemName', header: 'Item-Name', width: width350, type: ColumnType.PurchaseRequest },
+          { field: 'PurUom', header: 'Uom', width: width100, type: ColumnType.PurchaseRequest },
           { field: 'Branch', header: 'Branch', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'WorkItemName', header: 'BomLv', width: width250, type: ColumnType.PurchaseRequest },
-          { field: 'WorkGroupName', header: 'WorkGroup',  width: width250, type: ColumnType.PurchaseRequest },
-          { field: 'QuantityPur', header: 'Qty.',  width: width100, type: ColumnType.PurchaseRequest },
+          { field: 'WorkGroupName', header: 'WorkGroup', width: width250, type: ColumnType.PurchaseRequest },
+          { field: 'QuantityPur', header: 'Qty.', width: width100, type: ColumnType.PurchaseRequest },
+          { field: 'PrCloseStatus', header: 'PrClose.', width: 110, type: ColumnType.PurchaseRequest },
+          { field: 'CreateBy', header: 'Create.', width: width100, type: ColumnType.PurchaseRequest },
 
           { field: 'PoNumber', header: 'PoNo', width: width150, type: ColumnType.PurchaseOrder },
           { field: 'PoProject', header: 'JobNo', width: width150, type: ColumnType.PurchaseOrder },
           { field: 'PoDateString', header: 'PoDate', width: width100, type: ColumnType.PurchaseOrder },
           { field: 'DueDateString', header: 'DueDate', width: width100, type: ColumnType.PurchaseOrder },
-          { field: 'PoQuantityPur', header: 'Qty',  width: width100, type: ColumnType.PurchaseOrder },
+          { field: 'PoQuantityPur', header: 'Qty', width: width100, type: ColumnType.PurchaseOrder },
           { field: 'PoQuantityWeight', header: 'Weight', width: width150, type: ColumnType.PurchaseOrder },
           { field: 'PoPurUom', header: 'Uom', width: width100, type: ColumnType.PurchaseOrder },
           { field: 'PoBranch', header: 'Branch', width: width150, type: ColumnType.PurchaseOrder },
@@ -150,7 +152,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
           { field: 'PoWorkGroupName', header: 'WorkGroup', width: width250, type: ColumnType.PurchaseOrder },
           { field: 'PoStatus', header: 'TypePo', width: width250, type: ColumnType.PurchaseOrder },
           { field: 'CloseStatus', header: 'PoStatus', width: width100, type: ColumnType.PurchaseOrder },
-          
+
           { field: 'PurchaseReceipts', header: '', width: 10, type: ColumnType.PurchaseReceipt },
           { field: 'RcNumber', header: 'RecNo.', width: width150, type: ColumnType.Hidder },
           { field: 'HeatNumber', header: 'HeatNo', width: width150, type: ColumnType.Hidder },
@@ -283,15 +285,35 @@ export class PrMasterComponent implements OnInit, OnDestroy {
   }
 
   exportData(): void {
-
     const Table = document.getElementById('table1');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(Table);
-
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
     /* save to file */
     XLSX.writeFile(wb, "SheetJS.xlsx");
+  }
+
+  // get report data
+  onReport(): void {
+    if (this.reportForm) {
+      // if (this.totalRecords > 999) {
+      //   this.serviceDialogs.error("Error Message", `Total records is ${this.totalRecords} over 1,000 !!!`, this.viewCon);
+      //   return;
+      // }
+    
+      let scorll = this.reportForm.getRawValue() as Scroll;
+      if (!scorll.WhereProject && !scorll.Filter) {
+        this.serviceDialogs.error("Error Message", `Please select jobno or filter befor export.`, this.viewCon);
+        return;
+      }
+
+      this.loading = true;
+      scorll.Take = this.totalRecords;
+      this.service.getXlsx(scorll).subscribe(data => {
+        console.log(data);
+        this.loading = false;
+      });
+    }
   }
 }

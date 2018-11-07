@@ -80,6 +80,14 @@ namespace VipcoSageX3.ViewModels
         /// PREQUISO.POQSEQ
         /// </summary>
         public int? LinkPoSEQ { get; set; }
+        /// <summary>
+        /// PREQUIS.CREUSR
+        /// </summary>
+        public string CreateBy { get; set; }
+        /// <summary>
+        /// PREQUIS.CLEFLG_0
+        /// </summary>
+        public string PrCloseStatus { get; set; }
         #endregion
 
         #region PurchaseOrder
@@ -101,7 +109,7 @@ namespace VipcoSageX3.ViewModels
         /// </summary>
         public string PoStatus { get; set; }
         /// <summary>
-        /// PORDER.Cleflg0
+        /// PORDER.CLEFLG
         /// </summary>
         public string CloseStatus { get; set; }
         /// <summary>
