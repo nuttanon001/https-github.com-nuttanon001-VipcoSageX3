@@ -57,7 +57,7 @@
     <table *ngIf="!needReset" id="table1">
       <p-table [first]="first" [columns]="columns" [value]="datasource" [lazy]="true" (onLazyLoad)="loadDataLazy($event)"
                [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,25,50]"
-               [totalRecords]="totalRecords" [loading]="loading" [scrollable]="true" scrollHeight="65vh" [style]="{width:'98vw'}">
+               [totalRecords]="totalRecords" [loading]="loading" [scrollable]="true" [scrollHeight]="mobHeight" [style]="{width:'98vw'}">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{'width.px':col.width}"

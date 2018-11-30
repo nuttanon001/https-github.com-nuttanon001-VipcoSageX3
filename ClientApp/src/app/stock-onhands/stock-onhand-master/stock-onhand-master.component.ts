@@ -30,7 +30,12 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
     private router: Router,
   ) {
     super(service, fb, viewCon, serviceDialogs);
+    // 100 for bar | 200 for titil and filter
+    this.mobHeight = (window.screen.height - 310) + "px";
   }
+
+  // Parameter
+  mobHeight: any;
 
   ngOnInit(): void {
     this.buildForm();
@@ -63,19 +68,21 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
 
         this.columns = new Array;
         this.columns = [
-          { field: 'ItemCode', header: 'Product', width: width150, type: ColumnType.PurchaseOrder },
+          { field: 'ItemCode', header: 'Product', width: 175, type: ColumnType.PurchaseOrder },
           { field: 'ItemDescFull', header: 'Description', width: width350, type: ColumnType.PurchaseOrder },
-          { field: 'Uom', header: 'Uom', width: 75, type: ColumnType.PurchaseOrder },
+          //{ field: 'Uom', header: 'Uom', width: 75, type: ColumnType.PurchaseOrder },
           { field: 'Category', header: 'Category', width: width100, type: ColumnType.PurchaseOrder},
           { field: 'CategoryDesc', header: 'Category Desc', width: width150, type: ColumnType.PurchaseOrder},
          
 
-          { field: 'StockLocations', header: '', width: 10, type: ColumnType.PurchaseReceipt },
+          { field: 'StockLocations', header: '', width: 5, type: ColumnType.PurchaseReceipt },
           { field: 'StockByLocation', header: 'StockByLocation', width: 150, type: ColumnType.Hidder },
           { field: 'Location', header: 'Location', width: 100, type: ColumnType.Hidder },
+          { field: 'Uom', header: 'Uom', width: 75, type: ColumnType.Hidder },
 
           { field: 'InternelStockString', header: 'TotalStock', width: 100, type: ColumnType.PurchaseOrder },
           { field: 'OnOrderString', header: 'OnOrder', width: 85, type: ColumnType.PurchaseOrder },
+
           // { field: 'LocationStock', header: 'Location', width: 125, },
           // { field: 'InternelStockString', header: 'StockByLocation', width: 250, },
         ];
@@ -125,8 +132,13 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
   // get report data
   onReport(): void {
     if (this.reportForm) {
+      let scorll = this.reportForm.getRawValue() as Scroll;
+      if (!scorll.WhereBank && !scorll.Filter) {
+        this.serviceDialogs.error("Error Message", `Please select item category or filter befor export.`, this.viewCon);
+        return;
+      }
+
       this.loading = true;
-      const scorll = this.reportForm.getRawValue() as Scroll;
       this.service.getXlsx(scorll).subscribe(data => {
         console.log(data);
         this.loading = false;

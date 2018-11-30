@@ -158,7 +158,7 @@ namespace VipcoSageX3.Controllers.SageX3
                         CategoryDesc = item?.nAText?.Texte0 ?? "",
                         ItemCode = item?.ProductMaster?.Itmref0,
                         ItemDesc = item?.ProductMaster?.Itmdes10,
-                        Uom = item?.ProductMaster?.Stu0,
+                        Uom = string.IsNullOrEmpty(item?.ProductMaster?.Pcu0.Trim()) ? item?.ProductMaster?.Stu0 : item?.ProductMaster?.Pcu0,
                     };
 
                     //ItemName
@@ -463,7 +463,7 @@ namespace VipcoSageX3.Controllers.SageX3
                         new DataColumn("Item Desc.", typeof(string)),
                         new DataColumn("Uom",typeof(string)),
                         new DataColumn("Category",typeof(string)),
-                        new DataColumn("Category ฏำหแ",typeof(string)),
+                        new DataColumn("Uom",typeof(string)),
                     });
 
                     //Adding the Rows

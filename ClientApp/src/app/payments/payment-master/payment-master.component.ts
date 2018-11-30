@@ -30,9 +30,12 @@ export class PaymentMasterComponent extends BaseScheduleComponent<Payment,Paymen
     private router: Router,
   ) {
     super(service, fb, viewCon, serviceDialogs);
+    // 100 for bar | 200 for titil and filter
+    this.mobHeight = (window.screen.height - 310) + "px";
   }
   // Parameter
   failLogin: boolean = false;
+  mobHeight: any;
 
   ngOnInit(): void {
     this.buildForm();
@@ -136,7 +139,7 @@ export class PaymentMasterComponent extends BaseScheduleComponent<Payment,Paymen
       this.loading = true;
       const scorll = this.reportForm.getRawValue() as Scroll;
       this.service.getXlsx(scorll).subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.loading = false;
       });
       //this.service.getPaymentReport(scorll)

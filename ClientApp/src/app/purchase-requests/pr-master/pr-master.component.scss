@@ -4,7 +4,7 @@
 @mixin block-master {
   text-align: center;
   color: darkslateblue !important;
-  font-size: large !important;
+  /*font-size: large !important;*/
 }
 
 /* Structure */
@@ -32,6 +32,11 @@
   }
 }
 
+:host /deep/ .ui-widget {
+  font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 0.9em;
+}
+
 .detail {
   max-height: 90%;
   align-items: flex-start;
@@ -45,6 +50,7 @@
 
 .PrHeader {
   background-color: gold !important;
+  font-size: 1em !important;
   @include block-master;
 }
 

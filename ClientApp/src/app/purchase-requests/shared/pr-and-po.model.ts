@@ -3,6 +3,8 @@ import { PurchaseReceipt } from "./purchase-receipt.model";
 export interface PrAndPo {
   //Purchase Request
   ToDate?: Date;
+  PrWeight?: number;
+  PrWeightString?: string;
   /// <summary>
   /// PREQUISD.PSHNUM
   /// </summary>

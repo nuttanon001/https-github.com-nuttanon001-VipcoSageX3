@@ -20,6 +20,7 @@ export class StockLocaltionTableComponent implements OnInit {
     this.columns = [
       { field: 'QuantityString', header: 'StockOnLocation', width: 150 },
       { field: 'LocationCode', header: 'Location', width: 100 },
+      { field: 'Uom', header: 'Uom', width: 75 },
     ];
   }
 

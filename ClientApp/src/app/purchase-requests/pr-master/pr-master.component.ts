@@ -28,9 +28,13 @@ export class PrMasterComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private viewCon: ViewContainerRef,
     private serviceDialogs: DialogsService
-  ) { }
+  ) {
+    // 100 for bar | 200 for titil and filter
+    this.mobHeight = (window.screen.height - 350) + "px";
+  }
 
   //Parameter
+  mobHeight: any;
   datasource: Array<PrAndPo>;
   totalRecords: number;
   loading: boolean;
@@ -137,8 +141,10 @@ export class PrMasterComponent implements OnInit, OnDestroy {
           { field: 'WorkItemName', header: 'BomLv', width: width250, type: ColumnType.PurchaseRequest },
           { field: 'WorkGroupName', header: 'WorkGroup', width: width250, type: ColumnType.PurchaseRequest },
           { field: 'QuantityPur', header: 'Qty.', width: width100, type: ColumnType.PurchaseRequest },
-          { field: 'PrCloseStatus', header: 'PrClose.', width: 110, type: ColumnType.PurchaseRequest },
-          { field: 'CreateBy', header: 'Create.', width: width100, type: ColumnType.PurchaseRequest },
+          { field: 'PrWeightString', header: 'Weight', width: width100, type: ColumnType.PurchaseRequest },
+          
+          { field: 'PrCloseStatus', header: 'PrClose', width: 110, type: ColumnType.PurchaseRequest },
+          { field: 'CreateBy', header: 'Create', width: width100, type: ColumnType.PurchaseRequest },
 
           { field: 'PoNumber', header: 'PoNo', width: width150, type: ColumnType.PurchaseOrder },
           { field: 'PoProject', header: 'JobNo', width: width150, type: ColumnType.PurchaseOrder },
@@ -154,11 +160,11 @@ export class PrMasterComponent implements OnInit, OnDestroy {
           { field: 'CloseStatus', header: 'PoStatus', width: width100, type: ColumnType.PurchaseOrder },
 
           { field: 'PurchaseReceipts', header: '', width: 10, type: ColumnType.PurchaseReceipt },
-          { field: 'RcNumber', header: 'RecNo.', width: width150, type: ColumnType.Hidder },
+          { field: 'RcNumber', header: 'RecNo', width: width150, type: ColumnType.Hidder },
           { field: 'HeatNumber', header: 'HeatNo', width: width150, type: ColumnType.Hidder },
-          { field: 'RcProject', header: 'JobNo.', width: width150, type: ColumnType.Hidder },
+          { field: 'RcProject', header: 'JobNo', width: width150, type: ColumnType.Hidder },
           { field: 'RcDateString', header: 'Date', width: width100, type: ColumnType.Hidder },
-          { field: 'RcQuantityPur', header: 'Qty.', width: width100, type: ColumnType.Hidder },
+          { field: 'RcQuantityPur', header: 'Qty', width: width100, type: ColumnType.Hidder },
           { field: 'RcQuantityWeight', header: 'Weight.', width: width100, type: ColumnType.Hidder },
           { field: 'RcPurUom', header: 'Uom', width: width100, type: ColumnType.Hidder },
           { field: 'RcBranch', header: 'Branch', width: width100, type: ColumnType.Hidder },

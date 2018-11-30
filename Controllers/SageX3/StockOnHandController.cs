@@ -160,7 +160,7 @@ namespace VipcoSageX3.Controllers.SageX3
             var Message = "";
             try
             {
-                var Datasource = await QueryData.Skip(Scroll.Skip ?? 0).Take(Scroll.Take ?? 15).AsNoTracking().ToListAsync();
+                var Datasource = await QueryData.Skip(Scroll.Skip ?? 0).Take(Scroll.Take != -1 ? (Scroll.Take ?? 15) : (Scroll.TotalRow ?? 15)).AsNoTracking().ToListAsync();
                 var MapDatas = new List<StockOnHandViewModel>();
 
                 foreach (var item in Datasource)
@@ -172,20 +172,22 @@ namespace VipcoSageX3.Controllers.SageX3
                         InternelStock = (double)(item?.nProductStock?.Physto0 ?? 0),
                         ItemCode = item?.nProductMaster?.Itmref0,
                         ItemDesc = item?.nProductMaster?.Itmdes10,
-                        OnOrder = (double)(item?.ProductsSites?.Ofs0 ?? 0),
-                        Uom = item?.nProductMaster?.Stu0,
+                        OnOrder = (double)(item?.nProductStock?.Ordsto0 ?? 0),
+                        Uom =  string.IsNullOrEmpty(item?.nProductMaster?.Pcu0.Trim()) ? item?.nProductMaster?.Stu0 : item?.nProductMaster?.Pcu0,
                     };
 
                     // Set Stock
                     var ListStock = await this.repositoryStock.GetToListAsync(x => x, x => x.Itmref0 == MapData.ItemCode);
                     if (ListStock != null && ListStock.Any())
                     {
-                        foreach (var stock in ListStock.GroupBy(x => x.Loc0))
+                        foreach (var stock in ListStock.GroupBy(x => new { x.Loc0,x.Pcu0 }))
                         {
                             MapData.StockLocations.Add(new StockLocationViewModel
                             {
-                                LocationCode = stock.Key,
-                                Quantity = (double)(stock?.Sum(z => z.Qtypcu0) ?? (decimal)0)
+                                LocationCode = stock.Key.Loc0,
+                                Uom = stock.Key.Pcu0,
+                                Quantity = (double)(stock?.Sum(z => z.Qtypcu0) ?? (decimal)0),
+
                             });
                         }
                     }
@@ -263,6 +265,8 @@ namespace VipcoSageX3.Controllers.SageX3
             if (Scroll == null)
                 return BadRequest();
             var Message = "";
+            // Set Take all
+            Scroll.Take = -1;
             var MapDatas = await this.GetData(Scroll);
             try
             {
@@ -276,8 +280,8 @@ namespace VipcoSageX3.Controllers.SageX3
                         new DataColumn("Item Desc.", typeof(string)),
                         new DataColumn("Category Code",typeof(string)),
                         new DataColumn("Category",typeof(string)),
-                        new DataColumn("Stock",typeof(string)),
-                        new DataColumn("OnOrder",typeof(string)),
+                        new DataColumn("Location",typeof(string)),
+                        new DataColumn("LocationStock",typeof(string)),
                         new DataColumn("Uom",typeof(string)),
                     });
 
@@ -285,16 +289,34 @@ namespace VipcoSageX3.Controllers.SageX3
                     foreach (var item in MapDatas)
                     {
                         item.ItemDesc = this.ConvertHtmlToText(item.ItemDescFull);
-
-                        table.Rows.Add(
-                            item.ItemCode,
-                            item.ItemDesc,
-                            item.Category,
-                            item.CategoryDesc,
-                            item.InternelStockString,
-                            item.OnOrderString,
-                            item.Uom
-                        );
+                        item.ItemDesc = item.ItemDesc.Replace("\r\n", "");
+                        if (item.StockLocations != null && item.StockLocations.Any())
+                        {
+                            foreach (var subitem in item.StockLocations)
+                            {
+                                table.Rows.Add(
+                                    item.ItemCode,
+                                    item.ItemDesc,
+                                    item.Category,
+                                    item.CategoryDesc,
+                                    subitem.LocationCode,
+                                    subitem.QuantityString,
+                                    subitem.Uom
+                                );
+                            }
+                        }
+                        else
+                        {
+                            table.Rows.Add(
+                                    item.ItemCode,
+                                    item.ItemDesc,
+                                    item.Category,
+                                    item.CategoryDesc,
+                                    "-",
+                                    "0",
+                                    item.Uom
+                                );
+                        }
                     }
 
                     var templateFolder = this.hosting.WebRootPath + "/reports/";

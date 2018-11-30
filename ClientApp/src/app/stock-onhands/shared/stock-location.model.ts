@@ -9,6 +9,10 @@ export interface StockLocation {
   Quantity?: number;
   QuantityString?: string;
   /// <summary>
+  /// STOCK.PCU_0
+  /// </summary>
+  Uom?: string;
+  /// <summary>
   /// STOCK.PJT_0
   /// </summary>
   Project?: string;

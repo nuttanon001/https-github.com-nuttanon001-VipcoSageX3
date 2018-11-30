@@ -10,6 +10,12 @@ namespace VipcoSageX3.ViewModels
         #region PurchaseRequest
         //Purchase Request
         public DateTime ToDate { get; set; }
+        /// <summary>
+        /// ITM.ITMWEI_0
+        /// </summary>
+        public double? PrWeight { get; set; }
+        public string PrWeightString => this.PrWeight != null ? string.Format("{0:#,##0.00}", this.PrWeight) : "0";
+
         public bool DeadLine { get; set; }
         /// <summary>
         /// PREQUISD.PSHNUM

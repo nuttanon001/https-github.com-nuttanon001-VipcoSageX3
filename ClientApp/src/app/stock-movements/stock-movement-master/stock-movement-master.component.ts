@@ -26,7 +26,12 @@ export class StockMovementMasterComponent extends BaseScheduleComponent<StockMov
     private router: Router,
   ) {
     super(service, fb, viewCon, serviceDialogs);
+    // 100 for bar | 200 for titil and filter
+    this.mobHeight = (window.screen.height - 310) + "px";
   }
+
+  //Parameter
+  mobHeight: any;
 
   ngOnInit(): void {
     this.buildForm();

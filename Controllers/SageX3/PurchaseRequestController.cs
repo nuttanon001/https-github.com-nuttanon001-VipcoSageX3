@@ -250,6 +250,9 @@ namespace VipcoSageX3.Controllers.SageX3
                 MapData.ToDate = DateTime.Today.AddDays(-2);
 
                 this.mapper.Map<Prequisd, PurchaseRequestAndOrderViewModel>(item.prd, MapData);
+                // PrWeight
+                if (item?.item?.Itmwei0 > 0)
+                    MapData.PrWeight = (double)item.item.Itmwei0 * MapData.QuantityPur;
 
                 //ItemName
                 if (!string.IsNullOrEmpty(item?.item?.Purtex0))
@@ -453,6 +456,7 @@ namespace VipcoSageX3.Controllers.SageX3
                         new DataColumn("BomLv",typeof(string)),
                         new DataColumn("WorkGroup",typeof(string)),
                         new DataColumn("Qty",typeof(int)),
+                        new DataColumn("PrWeight",typeof(string)),
                         new DataColumn("PrClose",typeof(string)),
                         new DataColumn("Create",typeof(string)),
 
@@ -505,6 +509,7 @@ namespace VipcoSageX3.Controllers.SageX3
                             item.WorkItemName,
                             item.WorkGroupName,
                             item.QuantityPur,
+                            item.PrWeightString,
                             item.PrCloseStatus,
                             item.CreateBy,
 

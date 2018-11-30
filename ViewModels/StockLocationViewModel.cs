@@ -17,6 +17,10 @@ namespace VipcoSageX3.ViewModels
         public double Quantity { get; set; }
         public string QuantityString => string.Format("{0:#,##0}", this.Quantity);
         /// <summary>
+        /// STOCK.PCU_0
+        /// </summary>
+        public string Uom { get; set; }
+        /// <summary>
         /// STOCK.PJT_0
         /// </summary>
         public string Project { get; set; }
