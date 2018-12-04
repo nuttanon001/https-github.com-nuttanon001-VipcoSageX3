@@ -29,15 +29,18 @@ namespace VipcoSageX3.Controllers.SageX3
         private readonly SageX3Context sageContext;
 
         private readonly IRepositorySageX3<Stock> repositoryStock;
+        private readonly IRepositorySageX3<Stolot> repositoryStockLot;
         private readonly IHostingEnvironment hosting;
 
         public StockOnHandController(IRepositorySageX3<Itmmvt> repo,
             IRepositorySageX3<Stock> repoStock,
+            IRepositorySageX3<Stolot> repoStockLot,
             IHostingEnvironment hosting,
             IMapper mapper, SageX3Context x3Context) : base(repo, mapper)
         {
             // Repoistory
             this.repositoryStock = repoStock;
+            this.repositoryStockLot = repoStockLot;
             // Host
             this.hosting = hosting;
             // Context
@@ -180,15 +183,32 @@ namespace VipcoSageX3.Controllers.SageX3
                     var ListStock = await this.repositoryStock.GetToListAsync(x => x, x => x.Itmref0 == MapData.ItemCode);
                     if (ListStock != null && ListStock.Any())
                     {
-                        foreach (var stock in ListStock.GroupBy(x => new { x.Loc0,x.Pcu0 }))
+                        foreach (var stock in ListStock.GroupBy(x => new { x.Loc0,x.Pcu0,x.Pjt0,x.Lot0,x.Bpslot0,x.Palnum0 }))
                         {
-                            MapData.StockLocations.Add(new StockLocationViewModel
+                            var itemStock = new StockLocationViewModel
                             {
                                 LocationCode = stock.Key.Loc0,
                                 Uom = stock.Key.Pcu0,
+                                Project = stock.Key.Pjt0,
+                                LotNo = stock.Key.Lot0,
+                                HeatNo = stock.Key.Bpslot0,
+                                Origin = stock.Key.Palnum0,
                                 Quantity = (double)(stock?.Sum(z => z.Qtypcu0) ?? (decimal)0),
+                            };
 
-                            });
+                            if (!string.IsNullOrEmpty(itemStock.LotNo))
+                            {
+                                var stock_lot = await this.repositoryStockLot.GetFirstOrDefaultAsync
+                               (x => x, x => x.Itmref0 == MapData.ItemCode && x.Lot0 == itemStock.LotNo);
+
+                                if (stock_lot != null)
+                                {
+                                    if (stock_lot.Shldat0.Year < 2600)
+                                        itemStock.ExpDate = stock_lot.Shldat0;
+                                }
+                            }
+
+                            MapData.StockLocations.Add(itemStock);
                         }
                     }
 
@@ -283,6 +303,11 @@ namespace VipcoSageX3.Controllers.SageX3
                         new DataColumn("Location",typeof(string)),
                         new DataColumn("LocationStock",typeof(string)),
                         new DataColumn("Uom",typeof(string)),
+                        new DataColumn("Project",typeof(string)),
+                        new DataColumn("LotNo",typeof(string)),
+                        new DataColumn("HeatNo",typeof(string)),
+                        new DataColumn("Origin",typeof(string)),
+                        new DataColumn("ExpDate",typeof(string)),
                     });
 
                     //Adding the Rows
@@ -301,7 +326,12 @@ namespace VipcoSageX3.Controllers.SageX3
                                     item.CategoryDesc,
                                     subitem.LocationCode,
                                     subitem.QuantityString,
-                                    subitem.Uom
+                                    subitem.Uom,
+                                    subitem.Project,
+                                    subitem.LotNo,
+                                    subitem.HeatNo,
+                                    subitem.Origin,
+                                    subitem.ExpDateString
                                 );
                             }
                         }

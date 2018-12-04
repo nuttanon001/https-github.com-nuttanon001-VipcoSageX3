@@ -141,6 +141,7 @@ namespace VipcoSageX3.Models.SageX3
         public short Swisup30 { get; set; }
         public string Swiipi0 { get; set; }
         public string Bsitrs0 { get; set; }
+        public decimal Ztaxbase0 { get; set; }
         public decimal Rowid { get; set; }
     }
 }

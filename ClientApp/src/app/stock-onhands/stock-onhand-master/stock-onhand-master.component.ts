@@ -31,7 +31,7 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
   ) {
     super(service, fb, viewCon, serviceDialogs);
     // 100 for bar | 200 for titil and filter
-    this.mobHeight = (window.screen.height - 310) + "px";
+    this.mobHeight = (window.screen.height - 330) + "px";
   }
 
   // Parameter
@@ -73,15 +73,19 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
           //{ field: 'Uom', header: 'Uom', width: 75, type: ColumnType.PurchaseOrder },
           { field: 'Category', header: 'Category', width: width100, type: ColumnType.PurchaseOrder},
           { field: 'CategoryDesc', header: 'Category Desc', width: width150, type: ColumnType.PurchaseOrder},
-         
 
           { field: 'StockLocations', header: '', width: 5, type: ColumnType.PurchaseReceipt },
-          { field: 'StockByLocation', header: 'StockByLocation', width: 150, type: ColumnType.Hidder },
-          { field: 'Location', header: 'Location', width: 100, type: ColumnType.Hidder },
-          { field: 'Uom', header: 'Uom', width: 75, type: ColumnType.Hidder },
+          { field: 'QuantityString', header: 'StockByLocation', width: 155, type: ColumnType.Hidder },
+          { field: 'LocationCode', header: 'Location', width: 105, type: ColumnType.Hidder },
+          { field: 'Uom', header: 'Uom', width: 80, type: ColumnType.Hidder },
+          { field: 'Project', header: 'JobNo', width: 125, type: ColumnType.Hidder },
+          { field: 'LotNo', header: 'LotNo/HeatNo', width: 155, type: ColumnType.Hidder },
+          { field: 'HeatNo', header: 'HeatNo', width: 125, type: ColumnType.Hidder },
+          { field: 'Origin', header: 'Origin', width: 125, type: ColumnType.Hidder },
+          { field: 'ExpDateString', header: 'Exp.Date', width: 140, type: ColumnType.Hidder },
 
-          { field: 'InternelStockString', header: 'TotalStock', width: 100, type: ColumnType.PurchaseOrder },
-          { field: 'OnOrderString', header: 'OnOrder', width: 85, type: ColumnType.PurchaseOrder },
+          { field: 'InternelStockString', header: 'TotalStock', width: 110, type: ColumnType.PurchaseOrder },
+          { field: 'OnOrderString', header: 'OnOrder', width: 95, type: ColumnType.PurchaseOrder },
 
           // { field: 'LocationStock', header: 'Location', width: 125, },
           // { field: 'InternelStockString', header: 'StockByLocation', width: 250, },
@@ -133,7 +137,11 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
   onReport(): void {
     if (this.reportForm) {
       let scorll = this.reportForm.getRawValue() as Scroll;
-      if (!scorll.WhereBank && !scorll.Filter) {
+
+      // debug here
+      // console.log(JSON.stringify(scorll));
+
+      if (!scorll.WhereBanks && !scorll.Filter) {
         this.serviceDialogs.error("Error Message", `Please select item category or filter befor export.`, this.viewCon);
         return;
       }

@@ -83,6 +83,7 @@ namespace VipcoSageX3.Models.SageX3
         public string Ztaxbranch0 { get; set; }
         public string Zwhtno0 { get; set; }
         public string Ztaxseq0 { get; set; }
+        public decimal Ztax00 { get; set; }
         public decimal Rowid { get; set; }
     }
 }

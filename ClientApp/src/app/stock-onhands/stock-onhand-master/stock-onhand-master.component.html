@@ -51,7 +51,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
-            <td *ngFor="let col of filterItemsOfType()" [ngStyle]="{'width.px':col.width}" [attr.colspan]="col.type === 3 ? 4 : 0">
+            <td *ngFor="let col of filterItemsOfType()" [ngStyle]="{'width.px':col.width}" [attr.colspan]="col.type === 3 ? 9 : 0">
               <span *ngIf="col.field !== 'StockLocations' && col.type !== 3;else elseBlock" [innerHtml]="rowData[col.field] || '-'"></span>
               <ng-template #elseBlock>
                 <div *ngIf="col.field === 'StockLocations'">

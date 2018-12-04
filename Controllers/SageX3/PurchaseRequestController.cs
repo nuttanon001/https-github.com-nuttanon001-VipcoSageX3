@@ -46,7 +46,7 @@ namespace VipcoSageX3.Controllers.SageX3
             IRepositorySageX3<Porderq> repoPoLine,
             IRepositorySageX3<Preceiptd> repoRcLine,
             IRepositorySageX3<Cptanalin> repoDimLink,
-             IRepositorySageX3<Porder> repoPoHeader,
+            IRepositorySageX3<Porder> repoPoHeader,
             IRepositorySageX3<Cacce> repoDim,
             SageX3Context x3Context,
             IHostingEnvironment hosting,
@@ -333,8 +333,8 @@ namespace VipcoSageX3.Controllers.SageX3
                                                    where prc.Pohnum0 == item.pod.Pohnum0 &&
                                                          prc.Poplin0 == item.pod.Poplin0 &&
                                                          prc.Poqseq0 == item.pod.Poqseq0 &&
-                                                         all1.Vcrtypreg0 == 0 &&
-                                                         all1.Regflg0 == 1
+                                                         ((all1.Vcrtypreg0 == 0 && all1.Regflg0 == 1) ||
+                                                         (all1.Vcrtypreg0 == 17 && all1.Regflg0 == 1))
                                                    select new
                                                    {
                                                        preciptD = prc,

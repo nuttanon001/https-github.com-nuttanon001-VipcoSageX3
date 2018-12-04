@@ -18,9 +18,15 @@ export class StockLocaltionTableComponent implements OnInit {
   ngOnInit() {
     this.columns = new Array;
     this.columns = [
-      { field: 'QuantityString', header: 'StockOnLocation', width: 150 },
+      { field: 'QuantityString', header: 'StockByLocation', width: 140 },
       { field: 'LocationCode', header: 'Location', width: 100 },
       { field: 'Uom', header: 'Uom', width: 75 },
+      { field: 'Project', header: 'JobNo', width: 120 },
+      { field: 'LotNo', header: 'LotNo/HeatNo', width: 150 },
+      { field: 'HeatNo', header: 'HeatNo', width: 120 },
+      { field: 'Origin', header: 'Origin', width: 120 },
+      { field: 'ExpDateString', header: 'Exp.Date', width: 120 },
+
     ];
   }
 
