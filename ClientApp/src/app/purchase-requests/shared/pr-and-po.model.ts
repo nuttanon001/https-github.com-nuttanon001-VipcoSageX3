@@ -6,6 +6,11 @@ export interface PrAndPo {
   PrWeight?: number;
   PrWeightString?: string;
   /// <summary>
+  /// PREQUISD.PRQDAT
+  /// </summary>
+  RequestDate?: Date;
+  RequestDateString?: string;
+  /// <summary>
   /// PREQUISD.PSHNUM
   /// </summary>
   PrNumber?: string;

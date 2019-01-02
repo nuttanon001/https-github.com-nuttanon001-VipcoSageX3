@@ -24,7 +24,7 @@ import { HttpErrorHandler } from "./shared/http-error-handler.service";
 
 @NgModule({
   declarations: [
-	AppComponent,
+  AppComponent,
     HomeComponent,
     NavMenuComponent,
     LoginComponent,
@@ -39,7 +39,7 @@ import { HttpErrorHandler } from "./shared/http-error-handler.service";
     ReactiveFormsModule,
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-	 // Modules
+   // Modules
     DialogsModule,
     CustomMaterialModule,
    // Router
@@ -71,17 +71,22 @@ import { HttpErrorHandler } from "./shared/http-error-handler.service";
         loadChildren: "./payments/payment.module#PaymentModule",
         canActivate: [AuthGuard]
       },
+      {
+        path: "mics-account",
+        loadChildren: "./miscellaneous/misc.module#MiscModule",
+        canActivate: [AuthGuard]
+      },
       { path: "**", redirectTo: "home" },
     ]),
   ],
   providers: [
-	AuthGuard,
+  AuthGuard,
     AuthService,
     MessageService,
     HttpErrorHandler
   ],
   bootstrap: [
-	AppComponent
+  AppComponent
   ]
 })
 export class AppModule { }

@@ -35,6 +35,9 @@ namespace VipcoSageX3.Controllers.SageX3
         private readonly IRepositorySageX3<Porder> repositoryPoHeader;
         private readonly IRepositorySageX3<Preceiptd> repositoryRCLine;
         private readonly IRepositorySageX3<Cptanalin> repositoryDimLink;
+        private readonly IRepositoryDapperSageX3<PurchaseRequestAndOrderViewModel> repositoryPrAndPo;
+        private readonly IRepositoryDapperSageX3<PurchaseReceiptViewModel> repositoryPrq;
+        private readonly IHelperService helperService;
         private readonly IHostingEnvironment hosting;
 
         //Context
@@ -48,6 +51,9 @@ namespace VipcoSageX3.Controllers.SageX3
             IRepositorySageX3<Cptanalin> repoDimLink,
             IRepositorySageX3<Porder> repoPoHeader,
             IRepositorySageX3<Cacce> repoDim,
+            IRepositoryDapperSageX3<PurchaseRequestAndOrderViewModel> repoPrAndPo,
+            IRepositoryDapperSageX3<PurchaseReceiptViewModel> repoPrq,
+            IHelperService helper,
             SageX3Context x3Context,
             IHostingEnvironment hosting,
             IMapper mapper) : base(repo, mapper)
@@ -59,6 +65,10 @@ namespace VipcoSageX3.Controllers.SageX3
             this.repositoryPOLine = repoPoLine;
             this.repositoryPRLink = repoPrLink;
             this.repositoryRCLine = repoRcLine;
+            this.repositoryPrAndPo = repoPrAndPo;
+            this.repositoryPrq = repoPrq;
+            //DI
+            this.helperService = helper;
             // Context
             this.sageContext = x3Context;
             // Hosting
@@ -405,6 +415,408 @@ namespace VipcoSageX3.Controllers.SageX3
             return MapDatas;
         }
 
+        private async Task<List<PurchaseRequestAndOrderViewModel>> GetData2(ScrollViewModel scroll,bool option = false)
+        {
+            if (scroll != null)
+            {
+                var dbData = await this.repositoryPrAndPo.GetPurchaseRequestAndOrders(scroll);
+                scroll.TotalRow = 999;
+
+                foreach (var item in dbData)
+                {
+                    item.ToDate = DateTime.Today.AddDays(-2);
+                    if (item.ItemName.StartsWith("{\\rtf1") && !option)
+                        item.ItemName = Rtf.ToHtml(item.ItemName);
+
+                    //    var ReciptionLine = await (from prc in this.sageContext.Preceiptd
+                    //                               join sto in this.sageContext.Stojou on
+                    //                                   new { key1 = prc.Pthnum0, key2 = prc.Ptdlin0 } equals
+                    //                                   new { key1 = sto.Vcrnum0, key2 = sto.Vcrlin0 } into new_sto
+                    //                               from all1 in new_sto.DefaultIfEmpty()
+                    //                               where prc.Pohnum0 == item.PoNumber &&
+                    //                                     prc.Poplin0 == item.PoLine &&
+                    //                                     prc.Poqseq0 == item.PoSequence &&
+                    //                                     ((all1.Vcrtypreg0 == 0 && all1.Regflg0 == 1) ||
+                    //                                     (all1.Vcrtypreg0 == 17 && all1.Regflg0 == 1))
+                    //                               select new
+                    //                               {
+                    //                                   preciptD = prc,
+                    //                                   stock = all1,
+                    //                               }).ToListAsync();
+                    //    if (ReciptionLine.Any())
+                    //    {
+                    //        foreach (var itemRc in ReciptionLine)
+                    //        {
+                    //            var RcMapData = this.mapper.Map<Preceiptd, PurchaseReceiptViewModel>(itemRc.preciptD);
+                    //            RcMapData.HeatNumber = itemRc?.stock?.Lot0 ?? "";
+                    //            RcMapData.HeatNumber += itemRc?.stock?.Slo0 ?? "";
+                    //            var RcDim = await this.repositoryDimLink.GetFirstOrDefaultAsync(x => x, x => x.Vcrnum0 == itemRc.preciptD.Pthnum0 && x.Vcrlin0 == itemRc.preciptD.Ptdlin0);
+                    //            if (RcDim != null)
+                    //            {
+                    //                RcMapData.RcBranch = RcDim.Cce0;
+                    //                RcMapData.RcWorkItem = RcDim.Cce1;
+                    //                RcMapData.RcProject = RcDim.Cce2;
+                    //                RcMapData.RcWorkGroup = RcDim.Cce3;
+                    //            }
+                    //            // Add Rc to mapData
+                    //            item.PurchaseReceipts.Add(RcMapData);
+                    //        }
+                    //    }
+                    //    else
+                    //        item.DeadLine = item.DueDate != null ? item.ToDate.Date > item.DueDate.Value.Date : false;
+                }
+
+                return dbData;
+            }
+            return null;
+        }
+        
+        private async Task<List<PurchaseRequestAndOrderViewModel>> GetData3(ScrollViewModel scroll)
+        {
+            if (scroll != null)
+            {
+                string sWhere = "WHERE [ITM].[TCLCOD_0] LIKE '1%'";
+                string sSort = "";
+                string sQuery = "";
+
+                #region Where
+
+                var filters = string.IsNullOrEmpty(scroll.Filter) ? new string[] { "" }
+                                : scroll.Filter.Split(null);
+                foreach (string temp in filters)
+                {
+                    if (string.IsNullOrEmpty(temp))
+                        continue;
+
+                    string keyword = temp.ToLower();
+                    sWhere += (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") +
+                                                    $@"(LOWER(PRD.PJT_0) LIKE '%{keyword}%'
+                                                        OR LOWER([PRD].[ITMREF_0]) LIKE '%{keyword}%'
+                                                        OR LOWER([PRD].[ITMDES_0]) LIKE '%{keyword}%'
+                                                        OR LOWER([PRH].[CREUSR_0]) LIKE '%{keyword}%'
+                                                        OR LOWER([PRD].[PSHNUM_0]) LIKE '%{keyword}%'
+                                                        OR LOWER([POD].[POHNUM_0]) LIKE '%{keyword}%'
+                                                        OR LOWER([POD].[ITMREF_0]) LIKE '%{keyword}%')";
+                }
+
+                if (!string.IsNullOrEmpty(scroll.WhereBranch))
+                    sWhere += (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"DIM.CCE_0 = '{scroll.WhereProject}'";
+
+                if (!string.IsNullOrEmpty(scroll.WhereWorkGroup))
+                    sWhere += (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"DIM.CCE_3 = '{scroll.WhereProject}'";
+
+                if (!string.IsNullOrEmpty(scroll.WhereWorkItem))
+                    sWhere += (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"DIM.CCE_1 = '{scroll.WhereProject}'";
+
+                if (!string.IsNullOrEmpty(scroll.WhereProject))
+                    sWhere += (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"DIM.CCE_2 = '{scroll.WhereProject}'";
+
+                if (scroll.SDate.HasValue)
+                    sWhere +=
+                        (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"PRH.PRQDAT_0 >= '{scroll.SDate.Value.AddHours(7).ToString("yyyy-MM-dd")}'";
+
+                if (scroll.EDate.HasValue)
+                    sWhere +=
+                        (string.IsNullOrEmpty(sWhere) ? "WHERE " : " AND ") + $"PRH.PRQDAT_0 <= '{scroll.EDate.Value.AddHours(7).ToString("yyyy-MM-dd")}'";
+
+                #endregion Where
+
+                #region Sort
+
+                switch (scroll.SortField)
+                {
+                    case "PrNumber":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"PRH.PSHNUM_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.prh.Pshnum0);
+                        else
+                            sSort = $"PRH.PSHNUM_0 ASC";//QueryData = QueryData.OrderBy(x => x.prh.Pshnum0);
+                        break;
+
+                    case "Project":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"DIM.CCE_2 DESC";//QueryData = QueryData.OrderByDescending(x => x.prh.Pjth0);
+                        else
+                            sSort = $"DIM.CCE_2 ASC";//QueryData = QueryData.OrderBy(x => x.prh.Pjth0);
+                        break;
+
+                    case "PRDateString":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"PRH.PRQDAT_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.prh.Prqdat0);
+                        else
+                            sSort = $"PRH.PRQDAT_0 ASC";//QueryData = QueryData.OrderBy(x => x.prh.Prqdat0);
+                        break;
+
+                    case "ItemName":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"PRD.ITMDES_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.prd.Itmdes0);
+                        else
+                            sSort = $"PRD.ITMDES_0 ASC";//QueryData = QueryData.OrderBy(x => x.prd.Itmdes0);
+                        break;
+
+                    case "Branch":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"DIM.CCE_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.dim.Cce0);
+                        else
+                            sSort = $"DIM.CCE_0 ASC";//QueryData = QueryData.OrderBy(x => x.dim.Cce0);
+                        break;
+
+                    case "WorkItemName":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"DIM.CCE_1 DESC";//QueryData = QueryData.OrderByDescending(x => x.dim.Cce1);
+                        else
+                            sSort = $"DIM.CCE_1 ASC";//QueryData = QueryData.OrderBy(x => x.dim.Cce1);
+                        break;
+
+                    case "WorkGroupName":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"DIM.CCE_3 DESC";//QueryData = QueryData.OrderByDescending(x => x.dim.Cce3);
+                        else
+                            sSort = $"DIM.CCE_3 ASC";//QueryData = QueryData.OrderBy(x => x.dim.Cce3);
+                        break;
+
+                    case "PoNumber":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"POD.POHNUM_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.pod.Pohnum0);
+                        else
+                            sSort = $"POD.POHNUM_0 ASC";//QueryData = QueryData.OrderBy(x => x.pod.Pohnum0);
+                        break;
+
+                    case "PoDateString":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"POD.ORDDAT_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.pod.Orddat0);
+                        else
+                            sSort = $"POD.ORDDAT_0 ASC";//QueryData = QueryData.OrderBy(x => x.pod.Orddat0);
+                        break;
+
+                    case "DueDateString":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"POD.EXTRCPDAT_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.pod.Extrcpdat0);
+                        else
+                            sSort = $"POD.EXTRCPDAT_0 ASC";//QueryData = QueryData.OrderBy(x => x.pod.Extrcpdat0);
+                        break;
+
+                    case "CreateBy":
+                        if (scroll.SortOrder == -1)
+                            sSort = $"PRH.CREUSR_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.prh.Creusr0);
+                        else
+                            sSort = $"PRH.CREUSR_0 ASC";//QueryData = QueryData.OrderBy(x => x.prh.Creusr0);
+                        break;
+
+                    default:
+                        sSort = $"PRH.PRQDAT_0 DESC";//QueryData = QueryData.OrderByDescending(x => x.prh.Prqdat0);
+                        break;
+                }
+
+                #endregion Sort
+
+                #region Query
+                // Query mulitple command
+                sQuery = $@"SELECT		--PRH
+                                        PRH.CLEFLG_0 AS [PrCloseStatusInt],
+                                        PRH.CREUSR_0 AS [CreateBy],
+                                        PRH.PRQDAT_0 AS [PRDate],
+                                        --PRD
+                                        PRD.EXTRCPDAT_0 AS [RequestDate],
+                                        PRD.PSHNUM_0 AS [PrNumber],
+                                        PRD.PSDLIN_0 AS [PrLine],
+                                        PRD.ITMREF_0 AS [ItemCode],
+                                        PRD.PUU_0 AS [PurUom],
+                                        PRD.STU_0 AS [StkUom],
+                                        PRD.QTYPUU_0 AS [QuantityPur],
+                                        PRD.QTYSTU_0 AS [QuantityStk],
+                                        --ITM
+                                        ITM.ITMWEI_0 AS [ItemWeight],
+                                        TXT.TEXTE_0 AS [ItemName],
+                                        --PRO
+                                        PRO.POHNUM_0 AS [LinkPoNumber],
+                                        PRO.POPLIN_0 AS [LinkPoLine],
+                                        PRO.POQSEQ_0 AS [LinkPoSEQ],
+                                        --POH
+                                        POH.CLEFLG_0 AS [CloseStatusInt],
+                                        POH.ZPO21_0 AS [PoStatusInt],
+                                        --POD
+                                        POD.POHNUM_0 AS [PoNumber],
+                                        POD.POPLIN_0 AS [PoLine],
+                                        POD.POQSEQ_0 AS [PoSequence],
+                                        POD.ORDDAT_0 AS [PoDate],
+                                        POD.EXTRCPDAT_0 AS [DueDate],
+                                        POD.PUU_0 AS [PoPurUom],
+                                        POD.STU_0 AS [PoStkUom],
+                                        POD.QTYPUU_0 AS [PoQuantityPur],
+                                        POD.QTYSTU_0 AS [PoQuantityStk],
+                                        POD.QTYWEU_0 AS [PoQuantityWeight],
+                                        --DIM
+                                        DIM.CCE_0 AS [Branch],
+                                        DIM.CCE_1 AS [WorkItem],
+                                        DIM.CCE_2 AS [Project],
+                                        DIM.CCE_3 AS [WorkGroup],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_0) AS [BranchName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_1) AS [WorkItemName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_2) AS [ProjectName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_3) AS [WorkGroupName],
+                                        --DIMPO
+                                        DIMPO.CCE_0 AS [PoBranch],
+                                        DIMPO.CCE_1 AS [PoWorkItem],
+                                        DIMPO.CCE_2 AS [PoProject],
+                                        DIMPO.CCE_3 AS [PoWorkGroup],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIMPO.CCE_0) AS [PoBranchName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIMPO.CCE_1) AS [PoWorkItemName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIMPO.CCE_2) AS [PoProjectName],
+                                        (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIMPO.CCE_3) AS [PoWorkGroupName]
+                            FROM		VIPCO.PREQUIS PRH
+                                        INNER JOIN VIPCO.PREQUISD PRD 
+                                            ON PRH.PSHNUM_0 = PRD.PSHNUM_0
+                                        LEFT OUTER JOIN VIPCO.PREQUISO PRO 
+                                            ON PRD.PSHNUM_0 = PRO.PSHNUM_0 
+                                            AND PRD.PSDLIN_0 = PRO.PSDLIN_0
+                                        LEFT OUTER JOIN VIPCO.PORDER POH 
+                                            ON PRO.POHNUM_0 = POH.POHNUM_0
+                                        LEFT OUTER JOIN VIPCO.PORDERQ POD 
+                                            ON PRO.POHNUM_0 = POD.POHNUM_0 
+                                            AND PRO.POPLIN_0 = POD.POPLIN_0
+                                        LEFT OUTER JOIN VIPCO.CPTANALIN DIM 
+                                            ON DIM.ABRFIC_0 = 'PSD'
+                                            AND DIM.VCRTYP_0 = 0
+                                            AND DIM.VCRSEQ_0 = 0
+                                            AND	DIM.CPLCLE_0 = ''
+                                            AND	DIM.ANALIG_0 = 1
+                                            AND PRD.PSHNUM_0 = DIM.VCRNUM_0 
+                                            AND PRD.PSDLIN_0 = DIM.VCRLIN_0
+                                        LEFT OUTER JOIN VIPCO.CPTANALIN DIMPO 
+                                            ON DIMPO.ABRFIC_0 = 'POP'
+                                            AND DIMPO.VCRTYP_0 = 0
+                                            AND	POD.POQSEQ_0 = DIMPO.VCRSEQ_0
+                                            AND POD.POHNUM_0 = DIMPO.VCRNUM_0 
+                                            AND POD.POPLIN_0 = DIMPO.VCRLIN_0
+                                            AND	DIMPO.CPLCLE_0 = ''
+                                            AND	DIMPO.ANALIG_0 = 1
+                                        LEFT OUTER JOIN VIPCO.ITMMASTER ITM 
+                                            ON PRD.ITMREF_0 = ITM.ITMREF_0
+                                        LEFT OUTER JOIN VIPCO.TEXCLOB TXT 
+                                            ON TXT.CODE_0 = ITM.PURTEX_0
+                            {sWhere}
+                            ORDER BY    {sSort}
+                            OFFSET      @Skip ROWS       -- skip 10 rows
+                            FETCH NEXT  @Take ROWS ONLY; -- take 10 rows;
+                            SELECT	    COUNT(*)
+                            FROM	    VIPCO.PREQUIS PRH
+                                        INNER JOIN VIPCO.PREQUISD PRD 
+                                            ON PRH.PSHNUM_0 = PRD.PSHNUM_0
+                                        LEFT OUTER JOIN VIPCO.PREQUISO PRO 
+                                            ON PRD.PSHNUM_0 = PRO.PSHNUM_0 
+                                            AND PRD.PSDLIN_0 = PRO.PSDLIN_0
+                                        LEFT OUTER JOIN VIPCO.PORDER POH 
+                                            ON PRO.POHNUM_0 = POH.POHNUM_0
+                                        LEFT OUTER JOIN VIPCO.PORDERQ POD 
+                                            ON PRO.POHNUM_0 = POD.POHNUM_0 
+                                            AND PRO.POPLIN_0 = POD.POPLIN_0
+                                        LEFT OUTER JOIN VIPCO.CPTANALIN DIM 
+                                            ON DIM.ABRFIC_0 = 'PSD'
+                                            AND DIM.VCRTYP_0 = 0
+                                            AND DIM.VCRSEQ_0 = 0
+                                            AND	DIM.CPLCLE_0 = ''
+                                            AND	DIM.ANALIG_0 = 1
+                                            AND PRD.PSHNUM_0 = DIM.VCRNUM_0 
+                                            AND PRD.PSDLIN_0 = DIM.VCRLIN_0
+                                        LEFT OUTER JOIN VIPCO.CPTANALIN DIMPO 
+                                            ON DIMPO.ABRFIC_0 = 'POP'
+                                            AND DIMPO.VCRTYP_0 = 0
+                                            AND	POD.POQSEQ_0 = DIMPO.VCRSEQ_0
+                                            AND POD.POHNUM_0 = DIMPO.VCRNUM_0 
+                                            AND POD.POPLIN_0 = DIMPO.VCRLIN_0
+                                            AND	DIMPO.CPLCLE_0 = ''
+                                            AND	DIMPO.ANALIG_0 = 1
+                                        LEFT OUTER JOIN VIPCO.ITMMASTER ITM 
+                                            ON PRD.ITMREF_0 = ITM.ITMREF_0
+                                        LEFT OUTER JOIN VIPCO.TEXCLOB TXT 
+                                            ON TXT.CODE_0 = ITM.PURTEX_0
+                            {sWhere};";
+
+                #endregion Query
+
+                var result = await this.repositoryPrAndPo.GetListEntitesAndTotalRow(sQuery, new { Skip = scroll.Skip ?? 0, Take = scroll.Take ?? 15 });
+                var dbData = result.Entities;
+                scroll.TotalRow = result.TotalRow;
+
+                string sReceipt = "";
+                foreach (var item in dbData)
+                {
+                    item.ToDate = DateTime.Today.AddDays(-2);
+                    if (item.ItemName.StartsWith("{\\rtf1"))
+                        item.ItemName = Rtf.ToHtml(item.ItemName);
+
+                    if (item?.ItemWeight > 0)
+                        item.PrWeight = (double)item.ItemWeight * item.QuantityPur;
+
+                    #region Receipt
+
+                    sReceipt = $@"SELECT	--STOJOU
+                                            STO.LOT_0 AS [HeatNumber],
+                                            STO.SLO_0 AS [HeatNumber2],
+                                            --PRECEIPTD
+                                            PRC.PTHNUM_0 AS [RcNumber],
+                                            PRC.PTDLIN_0 AS [RcLine],
+                                            PRC.RCPDAT_0 AS [RcDate],
+                                            PRC.PUU_0 AS [RcPurUom],
+                                            PRC.STU_0 AS [RcStkUom],
+                                            PRC.UOM_0 AS [RcUom],
+                                            PRC.QTYPUU_0 AS [RcQuantityPur],
+                                            PRC.QTYSTU_0 AS [RcQuantityStk],
+                                            PRC.QTYUOM_0 AS [RcQuantityUom],
+                                            PRC.QTYWEU_0 AS [RcQuantityWeight],
+                                            PRC.INVQTYPUU_0 AS [RcQuantityInvPur],
+                                            PRC.INVQTYSTU_0 AS [RcQuantityInvStk],
+                                            --DIM
+                                            DIM.CCE_0 AS [RcBranch],
+                                            DIM.CCE_1 AS [RcWorkItem],
+                                            DIM.CCE_2 AS [RcProject],
+                                            DIM.CCE_3 AS [RcWorkGroup],
+                                            (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_0) AS [RcBranchName],
+                                            (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_1) AS [RcWorkItemName],
+                                            (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_2) AS [RcProjectName],
+                                            (SELECT CAC.DES_0 FROM VIPCO.CACCE CAC WHERE CAC.CCE_0 = DIM.CCE_3) AS [RcWorkGroupName]
+
+                                FROM		[VIPCO].[STOJOU] STO WITH(INDEX(STOJOU_STJ0))
+                                            LEFT OUTER JOIN [VIPCO].[PRECEIPTD] PRC
+                                            ON STO.VCRNUM_0 = PRC.PTHNUM_0 
+                                            AND	STO.VCRLIN_0 = PRC.PTDLIN_0
+                                            LEFT OUTER JOIN VIPCO.CPTANALIN DIM 
+                                                ON DIM.ABRFIC_0 = 'PTD'
+                                                AND DIM.VCRTYP_0 = 0
+                                                AND DIM.VCRSEQ_0 = 0
+                                                AND	DIM.CPLCLE_0 = ''
+                                                AND	DIM.ANALIG_0 = 1
+                                                AND PRC.PTHNUM_0 = DIM.VCRNUM_0 
+                                                AND PRC.PTDLIN_0 = DIM.VCRLIN_0
+                                WHERE		PRC.POHNUM_0 = @PoNumber 
+                                            AND PRC.POPLIN_0 = @PoLine
+                                            AND PRC.POQSEQ_0 = @PoSequence
+                                            AND ((STO.VCRTYPREG_0 = 0 AND STO.REGFLG_0 = 1) OR (STO.VCRTYPREG_0 = 17 AND STO.REGFLG_0 = 1))
+                                ORDER BY	PRC.POPLIN_0 ASC";
+
+                    var receipts = await this.repositoryPrq.GetListEntites(sReceipt, new { item.PoNumber,item.PoLine,item.PoSequence });
+                    if (receipts.Any())
+                    {
+                        receipts.ForEach(receipt =>
+                        {
+                            if (string.IsNullOrEmpty(receipt.HeatNumber2))
+                                receipt.HeatNumber += receipt.HeatNumber2;
+
+                            item.PurchaseReceipts.Add(receipt);
+                        });
+                    }
+                    else
+                        item.DeadLine = item.DueDate != null ? item.ToDate.Date > item.DueDate.Value.Date : false;
+
+
+                    #endregion Receipt
+                }
+
+                return dbData;
+            }
+            return null;
+        }
+        
         // POST: api/PurchaseRequest/GetScroll
         [HttpPost("GetScroll")]
         public async Task<IActionResult> GetScroll([FromBody] ScrollViewModel Scroll)
@@ -415,14 +827,14 @@ namespace VipcoSageX3.Controllers.SageX3
             var Message = "";
             try
             {
-                var MapDatas = await this.GetData(Scroll);
+                var MapDatas = await this.GetData3(Scroll);
                 return new JsonResult(new ScrollDataViewModel<PurchaseRequestAndOrderViewModel>(Scroll, MapDatas), this.DefaultJsonSettings);
             }
             catch (Exception ex)
             {
                 Message = $"{ex.ToString()}";
             }
-            return BadRequest();
+            return BadRequest(new { Message });
         }
 
         [HttpPost("GetReport")]
@@ -438,7 +850,7 @@ namespace VipcoSageX3.Controllers.SageX3
                 // Scroll.Skip = 0;
                 // Scroll.Take = 999;
 
-                var MapDatas = await this.GetData(Scroll);
+                var MapDatas = await this.GetData3(Scroll);
 
                 if (MapDatas.Any())
                 {
@@ -449,6 +861,7 @@ namespace VipcoSageX3.Controllers.SageX3
                         new DataColumn("PrNo", typeof(string)),
                         new DataColumn("JobNo", typeof(string)),
                         new DataColumn("PrDate",typeof(string)),
+                        new DataColumn("RequestDate",typeof(string)),
                         new DataColumn("Item-Code",typeof(string)),
                         new DataColumn("Item-Name",typeof(string)),
                         new DataColumn("Uom",typeof(string)),
@@ -478,8 +891,9 @@ namespace VipcoSageX3.Controllers.SageX3
                     //Adding the Rows
                     foreach (var item in MapDatas)
                     {
-                        item.ItemName = this.ConvertHtmlToText(item.ItemName);
+                        item.ItemName = this.helperService.ConvertHtmlToText(item.ItemName);
                         item.ItemName = item.ItemName.Replace("\r\n", "");
+                        item.ItemName = item.ItemName.Replace("\n", "");
                         var Receipt = "";
                         foreach(var item2 in item.PurchaseReceipts)
                         {
@@ -502,6 +916,7 @@ namespace VipcoSageX3.Controllers.SageX3
                             item.PrNumber,
                             item.Project,
                             item.PRDateString,
+                            item.RequestDateString,
                             item.ItemCode,
                             item.ItemName,
                             item.PurUom,
@@ -529,25 +944,27 @@ namespace VipcoSageX3.Controllers.SageX3
                         );
                     }
 
-                    var templateFolder = this.hosting.WebRootPath + "/reports/";
-                    var fileExcel = templateFolder + $"PurchaseStatus_Report.xlsx";
+                    //var templateFolder = this.hosting.WebRootPath + "/reports/";
+                    //var fileExcel = templateFolder + $"PurchaseStatus_Report.xlsx";
+                    //var memory = new MemoryStream();
 
-                    using (XLWorkbook wb = new XLWorkbook())
-                    {
-                        var wsFreeze = wb.Worksheets.Add(table, "PurchaseStatus");
-                        wsFreeze.Columns().AdjustToContents();
-                        wsFreeze.SheetView.FreezeRows(1);
-                        wb.SaveAs(fileExcel);
-                    }
+                    //using (XLWorkbook wb = new XLWorkbook())
+                    //{
+                    //    var wsFreeze = wb.Worksheets.Add(table, "PurchaseStatus");
+                    //    wsFreeze.Columns().AdjustToContents();
+                    //    wsFreeze.SheetView.FreezeRows(1);
+                    //    wb.SaveAs(memory);
 
-                    var memory = new MemoryStream();
-                    using (var stream = new FileStream(fileExcel, FileMode.Open))
-                    {
-                        await stream.CopyToAsync(memory);
-                    }
-                    memory.Position = 0;
+                    //}                    
 
-                    return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Payment_Report.xlsx");
+                    //using (var stream = new FileStream(fileExcel, FileMode.Open))
+                    //{
+                    //    await stream.CopyToAsync(memory);
+                    //}
+                    //memory.Position = 0;
+
+                    return File(this.helperService.CreateExcelFile(table, "PurchaseStatus"), 
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Payment_Report.xlsx");
                 }
             }
             catch(Exception ex)

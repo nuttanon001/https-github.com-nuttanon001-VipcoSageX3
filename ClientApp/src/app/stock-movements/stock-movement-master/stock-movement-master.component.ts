@@ -130,7 +130,7 @@ export class StockMovementMasterComponent extends BaseScheduleComponent<StockMov
       this.loading = true;
       const scorll = this.reportForm.getRawValue() as Scroll;
       this.service.getXlsx(scorll).subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.loading = false;
       });
     }

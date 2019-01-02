@@ -50,6 +50,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   first: number = 0;
   needReset: boolean = false;
+  pageRow: number = 15;
 
   ngOnInit() {
     this.buildForm();
@@ -113,7 +114,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
   onGetData(schedule: Scroll): void {
     this.service.getAllWithScroll(schedule)
       .subscribe((dbData: ScrollData<PrAndPo>) => {
-        if (!dbData) {
+        if (!dbData || !dbData.Data) {
           this.totalRecords = 0;
           this.columns = new Array;
           this.datasource = new Array;
@@ -134,6 +135,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
           { field: 'PrNumber', header: 'PrNo.', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'Project', header: 'JobNo.', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'PRDateString', header: 'PrDate', width: width150, type: ColumnType.PurchaseRequest },
+          { field: 'RequestDateString', header: 'Request', width: width150, type: ColumnType.PurchaseRequest },
           { field: 'ItemCode', header: 'Item-Code', width: width250, type: ColumnType.PurchaseRequest },
           { field: 'ItemName', header: 'Item-Name', width: width350, type: ColumnType.PurchaseRequest },
           { field: 'PurUom', header: 'Uom', width: width100, type: ColumnType.PurchaseRequest },
@@ -216,6 +218,7 @@ export class PrMasterComponent implements OnInit, OnDestroy {
     // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
     // filters: FilterMetadata object having field as key and filter value, filter matchMode as value
 
+    this.pageRow = (event.rows || 15);
     // imitate db connection over a network
     this.reportForm.patchValue({
       Skip: event.first,
@@ -315,9 +318,10 @@ export class PrMasterComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
+      scorll.Skip = 0;
       scorll.Take = this.totalRecords;
       this.service.getXlsx(scorll).subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.loading = false;
       });
     }

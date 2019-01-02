@@ -32,6 +32,7 @@ export abstract class BaseScheduleComponent<Model,Service extends BaseRestServic
   // ScrollData
   scroll: Scroll;
   reportForm: FormGroup;
+  rowPage: number = 15;
   first: number = 0;
   needReset: boolean = false;
 
@@ -109,7 +110,7 @@ export abstract class BaseScheduleComponent<Model,Service extends BaseRestServic
     // event.sortField = Field name to sort with
     // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
     // filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-
+    this.rowPage = (event.rows || 15);
     // imitate db connection over a network
     this.reportForm.patchValue({
       Skip: event.first,

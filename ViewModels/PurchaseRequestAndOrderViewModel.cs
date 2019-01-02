@@ -18,6 +18,12 @@ namespace VipcoSageX3.ViewModels
 
         public bool DeadLine { get; set; }
         /// <summary>
+        /// PREQUISD.PRQDAT
+        /// </summary>
+        public DateTime? RequestDate { get; set; }
+        public string RequestDateString => this.RequestDate != null ? this.RequestDate.Value.ToString("dd/MM/yy") : "-";
+
+        /// <summary>
         /// PREQUISD.PSHNUM
         /// </summary>
         public string PrNumber { get; set; }
@@ -29,9 +35,10 @@ namespace VipcoSageX3.ViewModels
         /// PREQUISD.ITMREF
         /// </summary>
         public string ItemCode { get; set; }
-        /// <summary>
-        /// PREQUISD.ITMDES
-        /// </summary>
+
+        public double? ItemWeight { get; set; }/// <summary>
+                                               /// PREQUISD.ITMDES
+                                               /// </summary>
         public string ItemName { get; set; }
         /// <summary>
         /// PREQUISD.PUU
@@ -73,7 +80,7 @@ namespace VipcoSageX3.ViewModels
         /// PREQUISD.EXTRCPDAT
         /// </summary>
         public DateTime? PRDate { get; set; }
-        public string PRDateString { get; set; }
+        public string PRDateString => this.PRDate != null ? this.PRDate.Value.ToString("dd/MM/yy") : "-";
         /// <summary>
         /// PREQUISO.POHNUM
         /// </summary>
@@ -90,10 +97,14 @@ namespace VipcoSageX3.ViewModels
         /// PREQUIS.CREUSR
         /// </summary>
         public string CreateBy { get; set; }
+         /// <summary>
+        /// PREQUIS.CLEFLG_0
+        /// </summary>
+        public int? PrCloseStatusInt { get; set; }
         /// <summary>
         /// PREQUIS.CLEFLG_0
         /// </summary>
-        public string PrCloseStatus { get; set; }
+        public string PrCloseStatus => this.PrCloseStatusInt != null ? this.PrCloseStatusInt == 1 ? "Not Close" : "Close" : "-";
         #endregion
 
         #region PurchaseOrder
@@ -113,21 +124,28 @@ namespace VipcoSageX3.ViewModels
         /// <summary>
         /// PORDER.ZPO210
         /// </summary>
-        public string PoStatus { get; set; }
+        public string PoStatus => this.PoStatusInt == null ? "-" :
+                                this.PoStatusInt == 1 ? "จัดซื้อในประเทศ" :
+                                (this.PoStatusInt == 2 ? "จัดจ้าง" :
+                                    (this.PoStatusInt == 3 ? "Oversea Purchasing" :
+                                        (this.PoStatusInt == 4 ? "Mat Stock" :
+                                            (this.PoStatusInt == 5 ? "Surplus" : "Consumable Stock"))));
+        public byte? PoStatusInt { get; set; }
         /// <summary>
         /// PORDER.CLEFLG
         /// </summary>
-        public string CloseStatus { get; set; }
+        public string CloseStatus => this.CloseStatusInt != null ? this.CloseStatusInt == 1 ? "Not Close" : "Close" : "-";
+        public byte? CloseStatusInt { get; set; }
         /// <summary>
         /// PORDERQ.ORDDAT
         /// </summary>
         public DateTime? PoDate { get; set; }
-        public string PoDateString { get; set; }
+        public string PoDateString => this.PoDate != null ? this.PoDate.Value.ToString("dd/MM/yy") : "-";
         /// <summary>
         /// PORDERQ.EXTRCPDAT 
         /// </summary>
         public DateTime? DueDate { get; set; }
-        public string DueDateString { get; set; }
+        public string DueDateString => this.DueDate != null ? this.DueDate.Value.ToString("dd/MM/yy") : "-";
         /// <summary>
         /// PORDERQ.PUU
         /// </summary>

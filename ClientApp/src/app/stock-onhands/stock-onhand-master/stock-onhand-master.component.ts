@@ -148,7 +148,7 @@ export class StockOnhandMasterComponent extends BaseScheduleComponent<StockOnhan
 
       this.loading = true;
       this.service.getXlsx(scorll).subscribe(data => {
-        console.log(data);
+        //console.log(data);
         this.loading = false;
       });
     }

@@ -58,15 +58,6 @@ namespace VipcoSageX3.Models.SageX3
         public virtual DbSet<Uporderp> Uporderp { get; set; }
         public virtual DbSet<Uporderq> Uporderq { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=192.168.2.174\\SAGEX3;Initial Catalog=x3v11;Persist Security Info=True;User Id=nuttanon;Password=@dmin56;MultipleActiveResultSets=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Atabdiv>(entity =>

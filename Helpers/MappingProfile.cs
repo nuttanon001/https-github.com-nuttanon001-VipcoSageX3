@@ -156,12 +156,15 @@ namespace VipcoSageX3.Helpers
             //.ForMember(x => x.QuantityStk, o => o.MapFrom(s => s.Qtystu0))
             // PurchaseRequest Header
             CreateMap<Prequis, PurchaseRequestAndOrderViewModel>()
+                // .ForMember(x => x.RequestDate,o => o.MapFrom(s => s.Prqdat0))
                 .ForMember(x => x.PrCloseStatus, o => o.MapFrom(s => s.Cleflg0 == 1 ? "Not Close" : "Close"))
                 .ForMember(x => x.CreateBy, o => o.MapFrom(s => s.Creusr0))
                 .ForMember(x => x.PRDate, o => o.MapFrom(s => s.Prqdat0))
                 .ForMember(x => x.PRDateString, o => o.MapFrom(s => s.Prqdat0.ToString("dd/MM/yy")));
             // PurchaseRequest Detail
             CreateMap<Prequisd, PurchaseRequestAndOrderViewModel>()
+                // EXTRCPDAT 
+                .ForMember(x => x.RequestDate,o => o.MapFrom(s => s.Extrcpdat0))
                 .ForMember(x => x.PrNumber, o => o.MapFrom(s => s.Pshnum0))
                 .ForMember(x => x.PrLine, o => o.MapFrom(s => s.Psdlin0))
                 .ForMember(x => x.ItemCode, o => o.MapFrom(s => s.Itmref0))
@@ -170,7 +173,7 @@ namespace VipcoSageX3.Helpers
                 .ForMember(x => x.StkUom, o => o.MapFrom(s => s.Stu0))
                 .ForMember(x => x.QuantityPur, o => o.MapFrom(s => s.Qtypuu0))
                 .ForMember(x => x.QuantityStk, o => o.MapFrom(s => s.Qtystu0));
-            // PurchaseRequest link PurchaseOrder
+            // PurchaseRequest link PurchasOrder
             CreateMap<Prequiso, PurchaseRequestAndOrderViewModel>()
                 .ForMember(x => x.LinkPoNumber, o => o.MapFrom(s => s.Pohnum0))
                 .ForMember(x => x.LinkPoLine, o => o.MapFrom(s => s.Poplin0))
@@ -205,7 +208,7 @@ namespace VipcoSageX3.Helpers
                 .ForMember(x => x.RcNumber, o => o.MapFrom(s => s.Pthnum0))
                 .ForMember(x => x.RcLine, o => o.MapFrom(s => s.Ptdlin0))
                 .ForMember(x => x.RcDate, o => o.MapFrom(s => s.Rcpdat0))
-                .ForMember(x => x.RcDateString, o => o.MapFrom(s => s.Rcpdat0.ToString("dd/MM/yy")))
+                //.ForMember(x => x.RcDateString, o => o.MapFrom(s => s.Rcpdat0.ToString("dd/MM/yy")))
                 .ForMember(x => x.RcPurUom, o => o.MapFrom(s => s.Puu0))
                 .ForMember(x => x.RcStkUom, o => o.MapFrom(s => s.Stu0))
                 .ForMember(x => x.RcUom, o => o.MapFrom(s => s.Uom0))

@@ -41,6 +41,10 @@ namespace VipcoSageX3
                                       .AllowAnyHeader()
                                       .AllowAnyMethod());
             });
+            // Add DI
+            services.AddScoped<HtmlDocumentService>();
+            services.AddScoped<ExcelWorkBookService>();
+            services.AddScoped<IHelperService, HelperService>();
             // Change AddDbContextPool if EF Core 2.1
             services.AddDbContextPool<MachineContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("MachineConnection")))
@@ -48,7 +52,8 @@ namespace VipcoSageX3
                 option.UseSqlServer(Configuration.GetConnectionString("SageX3Connection"), sqlServerOptions => sqlServerOptions.CommandTimeout(90)));
             // Add Repositoy
             services.AddTransient(typeof(IRepositorySageX3<>), typeof(RepositorySageX3<>))
-                    .AddTransient(typeof(IRepositoryMachine<>), typeof(RepositoryMachine<>));
+                    .AddTransient(typeof(IRepositoryMachine<>), typeof(RepositoryMachine<>))
+                    .AddTransient(typeof(IRepositoryDapperSageX3<>), typeof(RepositoryDapperSageX3<>));
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
